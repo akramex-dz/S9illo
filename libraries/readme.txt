@@ -1,0 +1,1 @@
+put this subdirectories of "libraries" in "libraries" directory for Arduino IDE on your machine.
