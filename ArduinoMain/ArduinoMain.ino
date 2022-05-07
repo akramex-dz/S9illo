@@ -1,5 +1,9 @@
 
 #include <Wire.h>
+#include <DHT.h>
+#define dataPin 7 // dht data pin
+#define DHTType DHT22
+//DHT dht = DHT(dataPin, DHTType);
 #include <string_manp.h>
 #include <sensors.h>
 #include <functions.h>
@@ -9,21 +13,22 @@
 
 
 void setup() {
-  // join the arduino as a slave with addresse 8
-  // Set D7 as an OUTPUT
-  pinMode(PowerPin, OUTPUT);
-  
-  // Set to LOW so no power flows through the sensor
-  digitalWrite(PowerPin, LOW);
-  
   Wire.begin(0x8);
   Wire.onReceive(receiveEvent);
+  Serial.begin(9600);
   
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
- 
+  /*delay(2000);
+  Serial.print("temp: ");
+  Serial.print(DHT_22_temp(7));
+  Serial.print("c°");
+  delay(2000);
+  Serial.print("|| Humd: ");
+  Serial.print(DHT_22_humd(7));
+  Serial.println("%");
+  Serial.println();*/
 }
 
 void receiveEvent( int howMany ){
