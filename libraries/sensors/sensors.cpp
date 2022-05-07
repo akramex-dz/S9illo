@@ -67,5 +67,6 @@ float DHT_22_humd(int pinNumber)
     return 200; //error code
   }
 
+
   return humd;
 }
