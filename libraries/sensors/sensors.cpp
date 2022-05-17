@@ -40,14 +40,18 @@ int readWaterLevel(int sensorPin, int PowerPin) { // PowerPin is the VCC Pin
   return val;             // send current reading
 }
 
-float DHT_22_temp(int pinNumber)
+float DHT_22_temp(int pinNumber, int PowerPin)
 {
+    digitalWrite(PowerPin, HIGH);  // Turn the sensor ON
+    delay(10);              // wait 10 milliseconds
+    
     DHT dht = DHT(dataPin, DHTType);
-    dht.begin();
-    float temp = dht.readTemperature();
+    dht.begin(); // start the dht sensor
+
+    float temp = dht.readTemperature(); // read temperature
 
 
-    if(isnan(temp))
+    if(isnan(temp)) 
     {
       return 100; // error code 
     }
@@ -55,18 +59,20 @@ float DHT_22_temp(int pinNumber)
     return temp;
 }
 
-float DHT_22_humd(int pinNumber)
+float DHT_22_humd(int pinNumber, int PowerPin)
 {
+  digitalWrite(PowerPin, HIGH);  // Turn the sensor ON
+  delay(10);              // wait 10 milliseconds
+  
   DHT dht = DHT(dataPin, DHTType);
-  dht.begin();
+  dht.begin();// start the dht sensor
 
-  float humd = dht.readHumidity();
+  float humd = dht.readHumidity(); // read air humidity
 
   if(isnan(humd))
   {
     return 200; //error code
   }
-
 
   return humd;
 }

@@ -9,9 +9,9 @@ void actionnerVanne(int pinNumber, int mode); // start or stop the the solenoid 
 
 int niveauEau(int sensorPin, int PowerPin) ;// read the water lavel and send it to the Raspberry pi
 
-int temperature(int pinNumber);
+int temperature(int pinNumber, int PowerPin);
 
-int humidity(int pinNumber);
+int humidity(int pinNumber, int PowerPin);
 
 
 #endif // FUNCTIONS_H_INCLUDED
