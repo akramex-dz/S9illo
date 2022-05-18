@@ -6,6 +6,14 @@
 
 #define ANSWER_SIZE 6
 
+#define A0 A0
+#define A1 A1
+#define A2 A2
+#define A3 A3
+#define A4 A4
+#define A5 A5 
+#define A6 A6
+
 // using namespace std ;
 
 void sendThis(std::string response) // send the string "response" to the Master (Raspberry pi) using I2C protocol
@@ -154,4 +162,62 @@ int humidity(int pinNumber, int PowerPin)
     sendThis(answer);
 
     return 1;
+}
+
+void traiterActionnerVanne(std:: string temp){
+    int pin;// N° de pin
+    std:: string str;
+    str = temp[1]; // le premier chiffre du pin du pompe
+
+      int a = string_to_int(str); 
+      str = temp[3];
+
+       // il faut que si la raspberry veut envoyer un nombre de pin entre 1 et 9 que temp[3] == "1" sinon si le pin est entre 10 et 14 temp[3]=="0" 
+       // ceci est faite pour eviter de confendre entre par ex '2100000' est ce que le pin est 1 ou 10 donc si on veut 1 on va faire '2101000'
+
+      if ( str == "1" ){// le pin et entre 1 et 9 
+           pin = a; // donc c'est 'a'
+      }
+      
+      else{ // le pin est entre 10 et 14
+        str = temp[2];
+        int b = string_to_int(str); // le deuxieme chiffre
+        pin = a*10+b; // concatination
+      } 
+      int cmd;
+
+      str = temp[0]; // le type de command 2 pour actionner vanne 3 pour la désactiver
+      cmd = string_to_int(str);
+
+      actionnerVanne(pin , cmd-1); // si cmd == 2 donc il va allumer sinon il va l'eteint
+
+}
+
+void traiterSoilMoisture(int pin, int powerPin){
+    switch(pin){
+          case 0:
+             recupererValeurPlante(A0,powerPin) ;
+             break;
+          case 1:
+             recupererValeurPlante(A1,powerPin) ;
+             break;
+          case 2:
+             recupererValeurPlante(A2,powerPin) ;
+             break;
+          case 3:
+             recupererValeurPlante(A3,powerPin) ;
+             break;
+          case 4:
+             recupererValeurPlante(A4,powerPin) ;
+             break;
+          case 5:
+             recupererValeurPlante(A5,powerPin) ;
+             break;
+          case 6:
+             recupererValeurPlante(A6,powerPin) ;
+             break;
+          default :
+             Serial.println("there is something wrong !");
+             break;
+    }
 }

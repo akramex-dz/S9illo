@@ -19,25 +19,35 @@ int string_to_int (std::string str) // la premiere version
 
 int string_to_int (std::string str) // la deuxième version pour un seule charactere (j'ai un probleme avec le I2C avec la premiere version)
 {
-    if (str == "1")
+    if(str == "0")
+        return 0;
+    else if(str == "1")
         return 1;
-    if (str == "2")
-        return 2;
-    if (str == "3")
-        return 3;
-    if (str == "4")
-        return 4;
-    if (str == "5")
-        return 5;
-    if (str == "6")
-        return 6;
-    if (str == "7")
-        return 7;
-    if (str == "8")
-        return 8;
-    if (str == "9")
-        return 9;    
-
+        else if (str =="2")
+            return 2;
+            else if (str == "3")
+                return 3;
+                else if(str == "4")
+                    return 4;
+                    else if(str == "5")
+                        return 5;
+                        else if (str == "6")
+                            return 6;
+                            else if (str == "7")
+                                return 7;
+                                else if (str == "8")
+                                    return 8;
+                                    else if(str == "9")
+                                        return 9;
+                                    
+                                
+                            
+                        
+                    
+                
+            
+        
+    
 }
 
 std::string float_to_string(float num)
