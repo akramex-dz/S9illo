@@ -61,27 +61,13 @@ void requestEvent(){
   std:: string str ;
   int pin;// N° de pin
   int powerPin;
-  if (cmd>=2 && cmd<=3){// actionner ou déactionner pompe néssicite qu'un seule pin et ce pin et entre 1 et 14
-      traiterActionnerVanne(temp);
-      /*Serial.println("im here");  
-      str = temp[1]; // le premier chiffre du pin du pompe
-      int a = string_to_int(str); 
-      str = temp[3];
-       // il faut que si la raspberry veut envoyer un nombre de pin entre 1 et 9 que temp[3] == "1" sinon si le pin est entre 10 et 14 temp[3]=="0" 
-       // ceci est faite pour eviter de confendre entre par ex '2100000' est ce que le pin est 1 ou 10 donc si on veut 1 on va faire '2101000'
-      if ( str == "1" ){// le pin et entre 1 et 9 
-           pin = a; // donc c'est 'a'
-      }
-      else{ // le pin est entre 10 et 14
-        str = temp[2];
-        int b = string_to_int(str); // le deuxieme chiffre
-        pin = a*10+b; // concatination
-      }
-      Serial.print("le pin:");
-      Serial.print(pin);
 
-      actionnerVanne(pin , cmd-1); // si cmd == 2 donc il va allumer sinon il va l'eteint */    
+  
+  if (cmd>=2 && cmd<=3){// actionner ou déactionner pompe néssicite qu'un seule pin et ce pin et entre 1 et 14
+      traiterActionnerVanne(temp);    
   }
+
+  
   else if(cmd==1 || (cmd >= 3 && cmd <= 6 ) ) { //cmd == 1/ 3/ 4 /5 / 6 ( donc on a 
     if( temp[1] == 'A' ){ // normalement temp[1] == 'A'
       str = temp[2]; // the second number 0,1, ...,6
@@ -102,37 +88,21 @@ void requestEvent(){
       }
       // now i have the pin and the powerPin
 
-      if ( cmd == 1){ // recuperer valeur plante ( soil moisture sensor )
-        traiterSoilMoisture(pin, powerPin);
-        /*switch(pin){
-          case 0:
-             recupererValeurPlante(A0,powerPin) ;
-             break;
-          case 1:
-             recupererValeurPlante(A1,powerPin) ;
-             break;
-          case 2:
-             recupererValeurPlante(A2,powerPin) ;
-             break;
-          case 3:
-             recupererValeurPlante(A3,powerPin) ;
-             break;
-          case 4:
-             recupererValeurPlante(A4,powerPin) ;
-             break;
-          case 5:
-             recupererValeurPlante(A5,powerPin) ;
-             break;
-          case 6:
-             recupererValeurPlante(A6,powerPin) ;
-             break;
-          default :
-             Serial.println("there is something wrong !");
-             break;
+      if ( cmd == 1) // recuperer valeur plante ( soil moisture sensor )
+        traiterSoilMoisture(pin, powerPin);   
 
-        }*/
-      } // end of cmd ==1
-      
+        
+      if ( cmd == 4){ //temperature
+          temperature( pin,  powerPin);
+      }
+
+      if (cmd == 5){ // niveau d'eau
+        niveauEau(pin , powerPin);
+      }
+
+      if(cmd == 6){ // humidité de l'air
+        humidity(pin , powerPin);
+      }   
       
     } 
    

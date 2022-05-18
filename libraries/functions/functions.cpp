@@ -37,8 +37,15 @@ int recupererValeurPlante(int pin_number, int PowerPin) // function for reading 
     std::string moisture = float_to_string(moistureLevel); // converting soil moisture value to string
 
     // formatting the answer string ( it's gonna be sent to the Raspberry)
-    std::string answer = "11";
-    answer = answer + moisture;
+    char answer[6];
+    //std::string answer = "11";
+    //answer = answer + moisture;
+    answer[0] = '1';
+    answer[1] = '1';    
+    answer[2] = moisture[0];
+    answer[3] = moisture[1];
+    answer[4] = moisture[2];
+    answer[5] = moisture[3];
 
     sendThis(answer); // sending the response
 
