@@ -27,7 +27,14 @@ void setup() {
   Wire.onReceive(receiveEvent);
   Wire.onRequest(requestEvent);
   Serial.begin(9600);
-  pinMode(1,OUTPUT);
+  //
+  pinMode(10,OUTPUT);
+  pinMode(9,OUTPUT);
+  pinMode(3,OUTPUT);
+  pinMode(6,OUTPUT);
+  pinMode(5,OUTPUT);
+  
+  //
   
 }
 
@@ -57,7 +64,7 @@ void receiveEvent( int howMany ){
   
 }
 
-void requestEvent(){
+void requestEvent(){  
   std:: string str ;
   int pin;// N° de pin
   int powerPin;
@@ -68,43 +75,43 @@ void requestEvent(){
   }
 
   
-  else if(cmd==1 || (cmd >= 3 && cmd <= 6 ) ) { //cmd == 1/ 3/ 4 /5 / 6 ( donc on a 
-    if( temp[1] == 'A' ){ // normalement temp[1] == 'A'
-      str = temp[2]; // the second number 0,1, ...,6
-      pin = string_to_int(str);
-       // decoding the value of the powerPin
-      str = temp[3];
-      int a= string_to_int(str); // the first number 
-      str = temp[5];
-      // il faut que si la raspberry veut envoyer un nombre de powePin entre 1 et 9 que temp[5] == "1" sinon si le powePin est entre 10 et 14 temp[5]=="0" 
-      // ceci est faite pour eviter de confendre entre par ex '1A1100000' est ce que le powePin est 1 ou 10 donc si on veut 1 on va faire '1A1101000'
-      if (str == "1"){
-        powerPin = a; // donc c'est 'a'
-      }
-      else { // temp[5] == "0" donc le powerPin contient deux chiffres
-        str = temp[4]; // le deuxieme chiffre
-        int b = string_to_int(str);
-        powerPin = a*10+b; // concatination
-      }
-      // now i have the pin and the powerPin
+  else if(cmd==1 || (cmd >= 4 && cmd <= 6 ) ) { //cmd == 1/ 4 /5 / 6 ( donc on a 
+    
+    // decodingg PowerPin
+    str = temp[3];
+    int a= string_to_int(str); // the first number
+    str = temp[4]; // le deuxieme chiffre
+    int b = string_to_int(str);
+    powerPin = a*10+b; // concatination
 
-      if ( cmd == 1) // recuperer valeur plante ( soil moisture sensor )
-        traiterSoilMoisture(pin, powerPin);   
+    // Now we have the PowerPin
 
-        
-      if ( cmd == 4){ //temperature
-          temperature( pin,  powerPin);
+    if( cmd == 1 || cmd == 5 ){ // Soil Moisture or Water Lavel ( we need analog pin )
+      str = temp[2]; // the Second number of the analog pin for ex: A0, A1 ...
+      pin = string_to_int( str);
+
+      if(cmd == 1 ){ // Soil Moisture
+        traiterSoilMoisture(pin, powerPin);
       }
-
-      if (cmd == 5){ // niveau d'eau
-        niveauEau(pin , powerPin);
+      else if(cmd == 5 ){ // Water Lavel
+        traiterWaterLavel(pin , powerPin);
       }
+    }
+    else if ( cmd == 4 || cmd == 6){ // Temperature or air humidity
+      // decodingg the data Pin
+      str=temp[1];
+      a= string_to_int(str); // the first number
+      str = temp[2]; // le deuxieme chiffre
+      b = string_to_int(str);
+      pin = a*10+b; // concatination
 
-      if(cmd == 6){ // humidité de l'air
-        humidity(pin , powerPin);
-      }   
-      
-    } 
+      if(cmd == 4){ //temperature
+        temperature(pin, powerPin);
+      }
+      else if(cmd == 6){ // humidity
+        humidity(pin, powerPin);
+      }
+    }
    
   }
 
