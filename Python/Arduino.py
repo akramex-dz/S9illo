@@ -98,21 +98,41 @@ class Arduino:
         for c in ordre:
             l1.append(ord(c))
         bus.write_i2c_block_data(address, 0x00, l1)
+
+        rep = bus.read_i2c_block_data(address, 0)
+        string = ''
+        for i in range(0, 6):
+            string += chr(rep[i])
+        
+        print(string) #####################
+        
         sleep(temp)
-        ordre[0] = "3"
+
+        if(pin <= 9):
+            ordre = "30" + str(pin) + "000000"
+        elif(pin >= 10 and pin <= 14):
+            ordre = "3" + str(pin) + "000000"
+            
         l1 = []
         for c in ordre:
             l1.append(ord(c))
         bus.write_i2c_block_data(address, 0x00, l1)
-        sleep(1)
+        
+        rep = bus.read_i2c_block_data(address, 0)
+
+        string = ''
+        for i in range(0, 6):
+            string += chr(rep[i])
+
         stop = 0
-        while not stop:             #a changer selon les critere la fonction recuperer valeur 
+        '''while not stop:             #a changer selon les critere la fonction recuperer valeur 
             rep = bus.read_i2c_block_data(address, 0)
             string = ''
             for i in range(0, 6):
                 string += chr(rep[i])
             if(string[1] == "1"):
-                stop = 1
+                stop = 1'''
+
 
 
 

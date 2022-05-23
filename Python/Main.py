@@ -44,13 +44,17 @@ ard1 = Arduino(1, False, l1)
 ard2 = Arduino(2, True, l2)
 l3 = [ard1, ard2] """
 
-p1 = Plant(db, True, 0)
-p2 = Plant(db, False, 1)
+p1 = Plant(db, True, 0, 0, 1234, 0)
+p2 = Plant(db, False, 1, 1, 1234, 0)
 l1 = [p1, p2]
 
-print(l1[0].id_plante)
+
 
 ard = Arduino(0, True, l1, 8)
+
+p1.linked_arduino = ard
+p2.linked_arduino = ard
+
 l2 = [ard]
 
 
@@ -60,9 +64,11 @@ bleutooth = "hey"
 rasp = Raspberry(l2, configuration, bleutooth, 1234)
 
 
-while True:
-    for arduino in rasp.list_arduino:
+
+""" for arduino in rasp.list_arduino:
         for plant in arduino.list_plante:
-            if(plant.intelligent == True):
-                data = {"active" : True, "duration" : 30}           # 30 second pour le test de demain
-                db.child("raspberries").child(str(rasp.id_raspberry)).child("tabArduino").child(str(arduino.id_arduino)).child("plants").child(str(plant.id_plante)).child("commands").child("manual").set(data)
+                if(plant.intelligent == True):
+                        data = {"active" : True, "duration" : 30}           # 30 second pour le test de demain
+                        db.child("raspberries").child(str(rasp.id_raspberry)).child("tabArduino").child(str(arduino.id_arduino)).child("plants").child(str(plant.id_plante)).child("commands").child("manual").set(data) """
+while True:
+        time.sleep(1)

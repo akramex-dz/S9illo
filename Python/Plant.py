@@ -1,9 +1,11 @@
 # Class plante et c'est attribut
 
+
 class Plant:
 
     def __init__(self, id, valeur_sol, pin_vanne, seuille_temp, seuille_sol, valeur_temp, valeur_humidity_air, pin_sol_power, pin_sol_data, data_dht, power_dht, intelligent, db, arduino, id_rasp):
         self.id_plante = id                             # plant id
+        self.db = db                                    #firebase
         self.linked_arduino = arduino                   # the arduino which the plant is connected with
         self.id_arduino = arduino.id                    # the linked arduino id
         self.id_raspberry = id_rasp                     # the raspberry id
@@ -20,13 +22,27 @@ class Plant:
         self.intelligent = intelligent                  # boolean that says if the  plat is in the intelligent mode if so when we find it true if the plant need irigation we will
                                                         # modify in firebase so the stream of manual mode will execute
 
-        self.stream_intelligent_mode = db.child("raspberries").child(str(self.id_raspberry)).child("tabArduino").child(str(self.id_arduino)).child("plants").child(str(self.id_plante)).child("commands").child("smart").stream(self.stream_handler_intelligent_mode)
+        self.stream_intelligent_mode = db.child("raspberries").child(str(self.id_raspberry)).child("tabArduino").child(str(self.id_arduino)).child("plants").child(str(self.id_plante)).child("commands"
+        ).child("smart").stream(self.stream_handler_intelligent_mode)
 
-    '''def __init__(self, db, test, id1):
+        self.stream_manual_mode =  db.child("raspberries").child(str(self.id_raspberry)).child("tabArduino").child(str(self.id_arduino)).child("plants").child(str(self.id_plante)).child("commands"
+        ).child("manual").stream(self.stream_handler_manual_mode)
+
+
+
+    def __init__(self, db, test, id1, pinVanne, id_rasp , id_ard):
         self.id_plante = id1
+        self.db = db #firebase
         self.intelligent = test
+        self.linked_arduino = 1
+        self.pin_vanne = pinVanne
+        self.id_arduino = id_ard
+        self.id_raspberry = id_rasp 
         self.stream_intelligent_mode = db.child("raspberries").child("1234").child("tabArduino").child("0").child(
-            "plants").child(str(id1)).child("commands").child("smart").stream(self.stream_handler_intelligent_mode)'''
+            "plants").child(str(id1)).child("commands").child("smart").stream(self.stream_handler_intelligent_mode)
+        
+        self.stream_manual_mode =  db.child("raspberries").child(str(self.id_raspberry)).child("tabArduino").child(str(self.id_arduino)).child("plants").child(str(self.id_plante)).child("commands"
+        ).child("manual").stream(self.stream_handler_manual_mode)
 
 
 
@@ -39,8 +55,16 @@ class Plant:
             self.intelligent = False 
     
     def stream_handler_manual_mode(self, message):
-        if(message["data"]["active"] == True):
-            self.linked_arduino.actioner_vanne(self.pin_vanne, message["data"]["duration"])
+        data =  self.db.child("raspberries").child(str(self.id_raspberry)).child("tabArduino").child(str(self.id_arduino)).child("plants").child(str(self.id_plante)).child("commands"
+        ).child("manual").get()
+
+        
+        data = data.val()
+
+        if(data["active"] == True):
+            print("Active == True")
+            self.linked_arduino.actioner_vanne(self.pin_vanne, data["duration"])
+            print("done stream manual mode") 
         
 
 
