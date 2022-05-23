@@ -1,5 +1,5 @@
 # Class Arduino
-from Plante import Plante
+from Plant import Plant
 import smbus
 
 from time import sleep
@@ -41,7 +41,7 @@ class Arduino:
                 else:
                     trouve = 1
             self.list_plante[i].valeur_actuelle_sol = valeur
-        else:
+        #else:
             #On a un probleme de recuperation depuis le detecteur en essaie de relire n fois (n determiner) si l'information est toujour pas disponible en 
             # envoie un message d'erreur vers l'app
 
@@ -79,7 +79,7 @@ class Arduino:
                 else:
                     trouve = 1
             self.list_plante[i].valeur_actuelle_temp = valeur
-        else :
+        #else :
                 #On a un probleme de recuperation depuis le detecteur en essaie de relire n fois (n determiner) si l'information est toujour pas disponible en
                 # envoie un message d'erreur vers l'app
 
@@ -116,12 +116,6 @@ class Arduino:
 
 
 
-p1 = Plante(1, 12, 0, 15)
-p2 = Plante(2, 12, 1, 15)
-l1 = [p1, p2]
-
-ard1 = Arduino(1, False, l1)
-ard2 = Arduino(2, True, l1)
 
 """ print(ard1.list_plante[1].id_plante)
 print(ard1.list_plante[1].pin_vanne)

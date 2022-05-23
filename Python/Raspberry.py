@@ -1,6 +1,6 @@
 from cgi import print_arguments
 from tempfile import tempdir
-from Plante import Plante 
+from Plant import Plant
 from Arduino import Arduino
 import pyrebase
 from datetime import date, datetime
@@ -10,10 +10,11 @@ from datetime import date, datetime
 class Raspberry:
 
    
-    def __init__(self, list_arduino, firebase, bleutooth):
+    def __init__(self, list_arduino, firebase, bleutooth, id):
         self.list_arduino = list_arduino
         self.configuration = firebase
         self.credentials = bleutooth
+        self.id_raspberry = id
 
 
     def arrosage_automatic(self, list_arduino):
@@ -60,12 +61,11 @@ class Raspberry:
                         print(f"la plante numero {plante.id_plante} il fault l'arroser a {time} le {day}/{month}/{year}")
                     
 
-print(datetime.today().weekday())
 
 
 
 
-p1 = Plante(1, 12, 0, 15)
+"""p1 = Plante(1, 12, 0, 15)
 p2 = Plante(2, 16, 1, 15)
 p3= Plante(3, 18, 2, 15)
 p4 = Plante(4, 9, 3, 15)
@@ -81,7 +81,7 @@ l2 = [p6, p7, p8, p9, p10]
 
 ard1 = Arduino(1, False, l1)
 ard2 = Arduino(2, True, l2)
-l3 = [ard1, ard2]
+l3 = [ard1, ard2]"""
 
 
 #ras.arrosage_manuelle(2, 3)
@@ -109,8 +109,8 @@ db.push(data) """
 data = {"id_plante" : str(nb_plante), "Years" : "2022", "Month" : "05", "Day": "17", "Time" : "20:45"}
 db.child("Arrosage_Programable").child("Plante_arrosage" + str(nb_plante)).set(data) """
 
-ras = Raspberry(l3, firebaseConfig, "Bleutooth")
-ras.arrosage_programmable(l3)
+"""ras = Raspberry(l3, firebaseConfig, "Bleutooth")
+ras.arrosage_programmable(l3)"""
 
 
 """ now = datetime.now()
