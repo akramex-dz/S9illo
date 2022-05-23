@@ -1,15 +1,12 @@
 
 #include <Wire.h>
 #include <DHT.h>
-//#define dataPin 7 // dht data pin
-//#define DHTType DHT22
-//DHT dht = DHT(dataPin, DHTType);
+
 #include <string_manp.h>
 #include <sensors.h>
 #include <functions.h>
 
-//#define MoisturePin A1 // here i'll define the pins
-//#define PowerPin 7 // this will be the VCC for the sensors 
+ 
 #define A0 A0
 #define A1 A1
 #define A2 A2
@@ -20,21 +17,26 @@
 
 
 int cmd=0; // le type de commande envoyer par la raspberry ( 1, ... , 6) ( voir le tableau de codage raspberry => arduino ) 
-char temp[9]; // string comming from the raspberry  (action|pin|/*powerPin*/|time)
-                                                  //(   1   | 2 |   3    | 4 )
+char temp[9]; // string comming from the raspberry  (action|dataPin|powerPin)
+                                                  //(   1   |  2   |    2   )
 void setup() {
   Wire.begin(0x08);
   Wire.onReceive(receiveEvent);
   Wire.onRequest(requestEvent);
   Serial.begin(9600);
-  //
-  pinMode(10,OUTPUT);
-  pinMode(9,OUTPUT);
-  pinMode(3,OUTPUT);
-  pinMode(6,OUTPUT);
-  pinMode(5,OUTPUT);
   
-  //
+  pinMode(0,OUTPUT);
+  pinMode(1,OUTPUT);
+  pinMode(2,OUTPUT);
+  pinMode(3,OUTPUT);
+  pinMode(4,OUTPUT);
+  pinMode(5,OUTPUT);
+  pinMode(6,OUTPUT);
+  pinMode(7,OUTPUT);
+  pinMode(8,OUTPUT);
+  pinMode(9,OUTPUT);
+  
+  
   
 }
 

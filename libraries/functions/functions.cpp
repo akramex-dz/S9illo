@@ -82,23 +82,40 @@ void actionnerVanne(int pinNumber, int mode) // start or stop the the solenoid v
 
 int niveauEau(int sensorPin, int PowerPin) // read the water lavel and send it to the Raspberry pi
 {
+    std::string lavel;
     int waterLavel = readWaterLevel(sensorPin, PowerPin); // reading water lavel from sensor
 
     if (0 /* i'll write here a condition where i can't read from the sensor*/)
         return 0;
 
-    std::string lavel = int_to_string(waterLavel); // converting water lavel value to string
+        // par ex waterLavel = 512
+    int a= waterLavel%10 ; //premier chiddre à droite (a=2)
+    lavel[2] = int_to_string(a);
+
+    waterLavel = (waterLavel-a)/10; // éliminer le chiffre déja traiter  ( waterLavel = 51)
+    a= waterLavel%10 ; // deuxieme chiffre (a=1)
+    lavel[1] = int_to_string(a);
+
+    waterLavel = (waterLavel-a)/10; // éliminer le chiffre déja traiter  ( waterLavel = 5)
+    lavel[0] = int_to_string(waterLavel);
+    
+    //std::string lavel = int_to_string(waterLavel); // converting water lavel value to string
+
+
+    
 
     // formatting the answer string ( it's gonna be sent to the Raspberry)
     char answer[6];
     // std::string answer = "51" + lavel;
 
+    
+
     answer[0] = '5';
     answer[1] = '1';
-    answer[2] = lavel[0];
-    answer[3] = lavel[1];
-    answer[4] = lavel[2];
-    answer[5] = lavel[3];
+    answer[2] = '0'; // because the water lavel sensor maximum value contains 3 numbers
+    answer[3] = lavel[0];
+    answer[4] = lavel[1];
+    answer[5] = lavel[2];
 
     sendThis(answer); // sending the response
 
@@ -177,20 +194,10 @@ void traiterActionnerVanne(std:: string temp){
     str = temp[1]; // le premier chiffre du pin du pompe
 
       int a = string_to_int(str); 
-      str = temp[3];
-
-       // il faut que si la raspberry veut envoyer un nombre de pin entre 1 et 9 que temp[3] == "1" sinon si le pin est entre 10 et 14 temp[3]=="0" 
-       // ceci est faite pour eviter de confendre entre par ex '2100000' est ce que le pin est 1 ou 10 donc si on veut 1 on va faire '2101000'
-
-      if ( str == "1" ){// le pin et entre 1 et 9 
-           pin = a; // donc c'est 'a'
-      }
-      
-      else{ // le pin est entre 10 et 14
+ 
         str = temp[2];
         int b = string_to_int(str); // le deuxieme chiffre
         pin = a*10+b; // concatination
-      } 
       int cmd;
 
       str = temp[0]; // le type de command 2 pour actionner vanne 3 pour la désactiver
@@ -222,6 +229,35 @@ void traiterSoilMoisture(int pin, int powerPin){
              break;
           case 6:
              recupererValeurPlante(A6,powerPin) ;
+             break;
+          default :
+             Serial.println("there is something wrong !");
+             break;
+    }
+}
+
+void traiterWaterLavel(int pin , int powerPin){
+    switch(pin){
+        case 0:
+             niveauEau(A0,powerPin) ;
+             break;
+          case 1:
+             niveauEau(A1,powerPin) ;
+             break;
+          case 2:
+             niveauEau(A2,powerPin) ;
+             break;
+          case 3:
+             niveauEau(A3,powerPin) ;
+             break;
+          case 4:
+             niveauEau(A4,powerPin) ;
+             break;
+          case 5:
+             niveauEau(A5,powerPin) ;
+             break;
+          case 6:
+             niveauEau(A6,powerPin) ;
              break;
           default :
              Serial.println("there is something wrong !");

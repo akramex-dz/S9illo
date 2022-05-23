@@ -17,5 +17,7 @@ void traiterActionnerVanne(std:: string temp); // décode le message de la raspb
 
 void traiterSoilMoisture(int pin, int powerPin); // appler la function recupererValeurPlante ( j'ai utiliser cette function à cause de probleme que j'ai pas connue le type de pin par ex 'A0' donc j'ai utiliser de '#define')
 
+void traiterWaterLavel(int pin , int powerPin); // même que precedent avec water lavel
+
 
 #endif // FUNCTIONS_H_INCLUDED
