@@ -1,8 +1,7 @@
-from cgi import print_arguments
-from tempfile import tempdir
 from Plant import Plant
 from Arduino import Arduino
 import pyrebase
+import asyncio
 from datetime import date, datetime
 
 
@@ -10,26 +9,34 @@ from datetime import date, datetime
 class Raspberry:
 
    
-    def __init__(self, list_arduino, firebase, bleutooth, id_rasp):
+    def __init__(self, list_arduino, firebase, id_rasp):
         self.list_arduino = list_arduino
         self.configuration = firebase
-        self.credentials = bleutooth
         self.id_raspberry = id_rasp
 
+    def arrosage_automatic(self, plant):
+        
+        #task = asyncio.create_task( plant.linked_arduino.recuperer_valeur_sol(plant.pin_sol_data, plant.pin_sol_power) )
+        plant.linked_arduino.recuperer_valeur_sol(plant.pin_sol_data, plant.pin_sol_power)
 
-    def arrosage_automatic(self, list_arduino):
-        for arduino in list_arduino:
-            for plant in arduino.list_plante:
-                arduino.recuperer_valeur_sol(plant.pin_sol_data, plant.pin_sol_power)
-                if(arduino.test_temp == 1):
-                    arduino.recuperer_valeur_sol(plant.pin_data_dht, plant.pin_power_dht)
-                    if((plant.valeur_actuelle_sol >= plant.seuille_sol) or (plant.valeur_actuelle_temp >= plant.seuille_temp)):
-                        arduino.actioner_vanne(plant.id_plante, 10)
-                        #print(f"arrosage de la plante {plant.id_plante}")
-                else:
-                    if((plant.valeur_actuelle_sol >= plant.seuille_sol) or (plant.valeur_actuelle_temp >= plant.seuille_temp)):
-                        arduino.actioner_vanne(plant.id_plante, 10)
-                        #print(f"arrosage de la plante {plant.id_plante}")
+        """ task1 = asyncio.create_task( plant.linked_arduino.recuperer_valeur_temp(plant.pin_data_dht, plant.pin_power_dht) ) """
+        plant.linked_arduino.recuperer_valeur_temp(plant.pin_data_dht, plant.pin_power_dht)
+
+        """ await asyncio.sleep(0.1) """
+
+        """ task2 = asyncio.create_task( plant.linked_arduino.recuperer_valeur_humid(plant.pin_data_dht, plant.pin_power_dht) ) """
+        plant.linked_arduino.recuperer_valeur_humid(plant.pin_data_dht, plant.pin_power_dht)
+
+        if((plant.valeur_actuelle_sol >= plant.seuille_sol) or (plant.valeur_actuelle_temp >= plant.seuille_temp)):
+            """ task3 = asyncio.create_task( plant.linked_arduino.actioner_vanne(plant.id_plante, 10) ) """  # 10 secondes pour le test
+            plant.linked_arduino.actioner_vanne(plant.id_plante, 10)
+
+        """ await task
+        await task1
+        await task2
+        await task3 """
+            
+        
                 
 
     def arrosage_manuelle(self, id_plante, temp):

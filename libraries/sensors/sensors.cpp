@@ -2,7 +2,6 @@
 #include <DHT.h>
 #include "sensors.h"
 
-#define dataPin 7
 #define DHTType DHT22
 
 
@@ -45,7 +44,7 @@ float DHT_22_temp(int pinNumber, int PowerPin)
     digitalWrite(PowerPin, HIGH);  // Turn the sensor ON
     delay(10);              // wait 10 milliseconds
     
-    DHT dht = DHT(dataPin, DHTType);
+    DHT dht = DHT(pinNumber, DHTType);
     dht.begin(); // start the dht sensor
 
     float temp = dht.readTemperature(); // read temperature
@@ -64,7 +63,7 @@ float DHT_22_humd(int pinNumber, int PowerPin)
   digitalWrite(PowerPin, HIGH);  // Turn the sensor ON
   delay(10);              // wait 10 milliseconds
   
-  DHT dht = DHT(dataPin, DHTType);
+  DHT dht = DHT(pinNumber, DHTType);
   dht.begin();// start the dht sensor
 
   float humd = dht.readHumidity(); // read air humidity
