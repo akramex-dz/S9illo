@@ -1,16 +1,17 @@
-import { Image, Pressable, Text, View } from "react-native";
+import { Image, TouchableOpacity, Text, View } from "react-native";
 import COLORS from "../../data/colors";
 import { useState, useEffect } from "react";
+import { useNavigation } from "@react-navigation/native";
 
 import CheckBoxW from "./CheckBoxW";
-export default function PlantCardWatering({
+export default function PlantCardSelect({
   plant,
   // display,
   id,
   setPlantToIrregate,
   plantToIrregate,
 }) {
-
+  const navigate = useNavigation();
   const [check, setCheck] = useState(false);
   const checkHandler = () => {
     const plants = [...plantToIrregate];
@@ -39,8 +40,7 @@ export default function PlantCardWatering({
 
       }}
     >
-      <Pressable
-        android_ripple={{ color: "#000" }}
+      <TouchableOpacity
         style={{
           alignContent: 'center',
           alignItems: 'center',
@@ -49,9 +49,9 @@ export default function PlantCardWatering({
           backgroundColor: "white",
           flexDirection: 'row',
           paddingVertical: 15,
-          paddingHorizontal: 10
-
+          paddingHorizontal: 20
         }}
+        onPress={() => navigate.navigate('WateringSettings', { plant })}
       >
 
         <Image
@@ -69,30 +69,7 @@ export default function PlantCardWatering({
           </Text>
           <Text style={{ color: COLORS.GRAY, fontFamily: 'CircularStd-Medium', }}>{plant.specie}</Text>
         </View>
-
-        <Image
-          resizeMode="contain"
-          style={{ height: '40%', flex: 0.3 }}
-          source={require('../../assets/images/moisture.png')}
-        />
-        <Text
-          style={{ fontFamily: 'CircularStd-Bold', flex: 0.7, color: '#00000075', fontSize: 18 }}
-
-        >{plant.valeursActuelles.soilMoisture}%</Text>
-        <View style={{ flex: 0.5, left: '20%' }}>
-          {/* {
-            display && ( */}
-          <View>
-            <CheckBoxW
-              onPress={() => checkHandler()}
-              title="Check"
-              isChecked={check}
-            ></CheckBoxW>
-          </View>
-          {/* )
-          } */}
-        </View>
-      </Pressable >
+      </TouchableOpacity >
     </View >
   );
 }

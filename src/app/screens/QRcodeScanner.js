@@ -3,16 +3,16 @@ import { useNavigation } from "@react-navigation/native";
 
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import { StyleSheet, Text, View, Button, TouchableOpacity, Dimensions } from 'react-native';
-import { ref, get } from 'firebase/database';
+import { ref, get, set, update } from 'firebase/database';
 import { db } from "../../core/firebase"
 
 
-export default function QRcodeScanner({ navigation }) {
+export default function QRcodeScanner({ navigation, route }) {
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
   const [text, setText] = useState('not yet scanned');
   const navigate = useNavigation();
-
+  const { user } = route.params;
   const askForCameraPermission = () => {
     (async () => {
       const { status } = await BarCodeScanner.requestPermissionsAsync();
@@ -26,24 +26,40 @@ export default function QRcodeScanner({ navigation }) {
     askForCameraPermission();
   }, []);
 
+  const writeUserRaspId = (userId, raspId) => {
+    update(ref(db, 'users/' + userId), {
+      idRaspberry: raspId,
+    });
+  }
+
 
   //What happens when we scan the bar code
   const handleBarCodeScanned = ({ type, data }) => {
     setScanned(true);
     setText(data);
-    console.log(type + "\n" + data);
+
     get(ref(db, 'raspberries/' + data)).then((snapshot) => {
       if (snapshot.exists()) {
-        console.log(snapshot.val());
-        navigate.replace("successQR")
+        const id = user.uid;
+        console.log(id);
+        console.log(data);
+
+        writeUserRaspId(id, data);
+        console.log("1");
+
+        navigate.replace("successQR");
       }
       else {
-        navigate.replace("faillureQR")
+        console.log("2");
+
+        navigate.replace("faillureQR", { user });
         console.log("mafihach");
       }
     }).catch((e) => {
-      console.log();
-      navigate.replace("faillureQR");
+      console.log("3");
+      console.log(e);
+      navigate.replace("faillureQR", { user });
+
     });
 
   }

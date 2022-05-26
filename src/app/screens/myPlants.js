@@ -11,8 +11,9 @@ import COLORS from "../../data/colors";
 import { useEffect, useState } from "react";
 import PlantCard from "../components/PlantCard";
 import FloatingActionButton from "../components/FloatingActionButton";
+import CheckBox from "../components/CheckBox";
 
-export default function MyPlants({ plants, navigation }) {
+export default function MyPlants({ plants, navigation, idRaspBerry, index }) {
   const [displayDelete, setDisplayDelete] = useState(false);
   const [value, setValue] = useState("");
   const [plantToDelete, setPlantToDelete] = useState([]);
@@ -32,7 +33,6 @@ export default function MyPlants({ plants, navigation }) {
     >
       <View
         style={{
-          marginTop: '10%',
           height: (75 * Dimensions.get("screen").height) / 100,
           width: "80%",
         }}
@@ -50,7 +50,7 @@ export default function MyPlants({ plants, navigation }) {
               flexDirection: "row",
               alignItems: "center",
               borderColor: "#00000025",
-              borderWidth: 1,
+              borderWidth: 2,
               borderRadius: 20,
               flex: 1,
               marginRight: 5,
@@ -58,7 +58,7 @@ export default function MyPlants({ plants, navigation }) {
           >
             <Image
               source={require("../../assets/myPlants/search.png")}
-              style={{}}
+              style={{ height: 40, width: 40 }}
               resizeMode={"contain"}
             />
             <TextInput
@@ -84,10 +84,8 @@ export default function MyPlants({ plants, navigation }) {
             data={plants}
             renderItem={({ item, index }) => (
               <PlantCard
-                name={item.displayName}
-                img={item.picture}
-                etat={"Bon état"}
-                id={item.id}
+                plant={item}
+                moisture={item.valeursActuelles?.soilMoisture || ""}
                 display={displayDelete}
                 setPlantToDelete={setPlantToDelete}
                 plantToDelete={plantToDelete}
@@ -97,6 +95,8 @@ export default function MyPlants({ plants, navigation }) {
         </View>
       </View>
       <FloatingActionButton
+        idRaspBerry={idRaspBerry}
+        index={index}
         setDisplayDelete={setDisplayDelete}
         navigation={navigation}
       ></FloatingActionButton>

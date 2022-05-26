@@ -6,13 +6,18 @@ import Addplant from './src/app/screens/Addplant';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createStackNavigator } from 'react-navigation-stack';
-import LoginScreen from './src/app/screens/login';
-import RegisterScreen from './src/app/screens/register';
-import GraphCard from './src/app/screens/Graphs';
+import LoginScreen from './src/app/screens/Login';
+import RegisterScreen from './src/app/screens/Register';
+import GraphCardScreen from './src/app/screens/Graphs';
 import QRcodeScanner from './src/app/screens/QRcodeScanner';
-import faillureQR from './src/app/screens/faillureQRScreen';
-import successQR from './src/app/screens/successQRScreen';
-import Watering from './src/app/screens/Watering';
+import faillureQR from './src/app/screens/FaillureQRScreen';
+import successQR from './src/app/screens/SuccessQRScreen';
+import SpecificPlantSceen from './src/app/screens/SpecificPlantScreen';
+import ManualWatering from './src/app/screens/ManualWatering';
+import OnBoarding from "./src/app/screens/Onboarding";
+import WateringSettings from './src/app/screens/WateringSettings';
+import SelectPlant from './src/app/screens/SelectPlant';
+import WateringHistory from './src/app/screens/WateringHistory';
 import { auth } from './src/core/firebase';
 import { signOut } from 'firebase/auth';
 // import { createDrawerNavigator } from '@react-navigation/drawer';
@@ -64,17 +69,21 @@ export default function App() {
 
     <NavigationContainer>
       <Stack.Navigator >
-
+        {/* <Stack.Screen name="OnBoarding" component={OnBoarding} options={{ header: () => null }} /> */}
         <Stack.Screen name='Main' component={MainContainer} options={{ header: () => null }} />
-        <Stack.Screen name='faillureQR' component={faillureQR} options={{ header: () => null }} />
-        <Stack.Screen name='Addplant' component={Addplant} />
-        <Stack.Screen name='QRcodeScanner' component={QRcodeScanner} options={{ header: () => null }} />
-        <Stack.Screen name='successQR' component={successQR} options={{ header: () => null }} />
-        <Stack.Screen name='Graphic' component={GraphCard} />
-        <Stack.Screen name='Manual Watering' component={Watering} />
 
         <Stack.Screen name='Login' component={LoginScreen} options={{ header: () => null }} />
-        <Stack.Screen name='Register' component={RegisterScreen} />
+        <Stack.Screen name='Register' component={RegisterScreen} options={{ header: () => null }} />
+        <Stack.Screen name='QRcodeScanner' component={QRcodeScanner} options={{ header: () => null }} />
+        <Stack.Screen name='successQR' component={successQR} options={{ header: () => null }} />
+        <Stack.Screen name='faillureQR' component={faillureQR} options={{ header: () => null }} />
+        <Stack.Screen name='SelectPlant' component={SelectPlant} options={{ header: () => null }} />
+        <Stack.Screen name='SpecificPlantScreen' component={SpecificPlantSceen} options={{ header: () => null }} />
+        <Stack.Screen name='GraphicCardScreen' component={GraphCardScreen} options={{ header: () => null }} />
+        <Stack.Screen name='WateringSettings' component={WateringSettings} options={{ header: () => null }} />
+        <Stack.Screen name='Addplant' component={Addplant} options={{ header: () => null }} />
+        <Stack.Screen name='ManualWatering' component={ManualWatering} options={{ header: () => null }} />
+        <Stack.Screen name='WateringHistory' component={WateringHistory} options={{ header: () => null }} />
       </Stack.Navigator>
     </NavigationContainer>
     /* <NavigationContainer>

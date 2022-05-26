@@ -11,9 +11,9 @@ import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { child, getDatabase, onValue, ref, get } from 'firebase/database';
 
 //Screens 
-import DashBoard from '../screens/dashBoard'
+import DashBoard from '../screens/DashBoard'
 import Screen2 from '../screens/Screen2'
-import MyPlants from '../screens/myPlants'
+import MyPlants from '../screens/MyPlants'
 
 
 const Tab = createBottomTabNavigator();
@@ -22,20 +22,33 @@ export default function MainContainer() {
     const [user, setUser] = useState(null);
     const [plants, setPlants] = useState([]);
     const [infos, setInfos] = useState({});
-
-    const getPlants = async (idRaspBerry) => {
+    const [plantSeches, setPlantSeches] = useState(0);
+    const getPlants = async (idRaspberry) => {
         const plants = [];
+        var cpt = 0;
         const dbRef = ref(getDatabase());
         try {
 
-            const snapshot = await get(ref(db, "raspberries/" + idRaspBerry, "data/"))
+            const snapshot = await get(ref(db, "raspberries/" + idRaspberry + "/tabArduino"))
             if (snapshot.exists()) {
 
-                snapshot.val()["data"].forEach((childSnapshot, index) => {
-                    plants.push({ id: index, ...childSnapshot });
-                });
 
+                snapshot.val().forEach((childSnapshot) => {
+                    childSnapshot["plants"].forEach((childChildSnapshot) => {
+                        plants.push({ ...childChildSnapshot });
+                        if (((childChildSnapshot.valeursActuelles).soilMoisture) > 20 && ((childChildSnapshot.valeursActuelles).soilMoisture) < 60) {
+                            cpt++;
+                            console.log(cpt);
+                            console.log(cpt);
+                        }
+                    })
+                });
+                // snapshot.val()["data"].forEach((childSnapshot, index) => {
+                //     plants.push({ id: index, ...childSnapshot });
+                // });
+                console.log(plants);
                 setPlants(plants);
+                setPlantSeches(cpt * 100 / plants.length);
             }
             else {
                 console.log("no data");
@@ -43,17 +56,6 @@ export default function MainContainer() {
         } catch (e) {
             console.log(e)
         }
-        // const plants = [];
-        // const plantsRef = ref(db, 'raspberries/' + idRaspBerry + 'data/', plant.uid);
-        // const querySnapshot = await getDocs(collection(db, "raspberries", idRaspBerry, "data"));
-        // onValue(plantsRef, (snapshot) => {
-        //     snapshot.forEach(childSnapshot => {
-        //         plants.push({ id: childSnapshot.id, ...childSnapshot.data() }); console.log(childSnapshot.data().displayName)
-        //         setPlants(plants);
-
-        //     });
-        // });
-        // querySnapshot.forEach((doc) => { plants.push({ id: doc.id, ...doc.data() }); console.log(doc.data().displayName) });
     };
 
     const getInfos = (currentUser) => {
@@ -61,8 +63,8 @@ export default function MainContainer() {
         get(ref(db, "users/", currentUser.uid)).then((snapshot) => {
             if (snapshot.exists()) {
                 setInfos(snapshot.val()[currentUser.uid]);
-                getPlants(snapshot.val()[currentUser.uid].idRaspBerry);
-                console.log(snapshot.val()[currentUser.uid].idRaspBerry);
+                getPlants(snapshot.val()[currentUser.uid].idRaspberry);
+
 
 
             }
@@ -84,19 +86,19 @@ export default function MainContainer() {
 
 
 
-    useEffect(() => {
-        if (infos.idRaspBerry) {
-            const plantsRef = ref(db, "raspberries/" + infos.idRaspBerry, "data/");
-            const unsub = onValue(plantsRef, (querySnapshot) => {
-                const plants = [];
-                querySnapshot.forEach((childSnapshot) => {
-                    plants.push({ id: childSnapshot.id, ...childSnapshot.val() });
-                })
-                setPlants(plants);
-            })
-            return () => unsub();
-        }
-    }, [infos.idRaspBerry])
+    // useEffect(() => {
+    //     if (infos.idRaspberry) {
+    //         const plantsRef = ref(db, "raspberries/" + infos.idRaspberry+ "/data/");
+    //         const unsub = onValue(plantsRef, (querySnapshot) => {
+    //             const plants = [];
+    //             querySnapshot.forEach((childSnapshot) => {
+    //                 plants.push({ id: childSnapshot.id, ...childSnapshot.val() });
+    //             })
+    //             setPlants(plants);
+    //         })
+    //         return () => unsub();
+    //     }
+    // }, [infos.idRaspberry])
 
 
 
@@ -130,7 +132,7 @@ export default function MainContainer() {
                     </View>
                 )
             }} >
-                {props => <DashBoard {...props} user={user} infos={infos} />}
+                {props => <DashBoard {...props} infos={infos} plantSeches={plantSeches} />}
             </Tab.Screen>
 
             <Tab.Screen name={'Screen2'} options={{

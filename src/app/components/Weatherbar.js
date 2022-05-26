@@ -49,12 +49,11 @@ const wstyle = StyleSheet.create({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'flex-start',
-
+    marginTop: '10%',
+    marginLeft: '2%',
     flexDirection: 'row',
-    position: 'absolute',
     width: 290,
     height: 50,
-    top: 107,
 
     /*INSIDE*/
     alignSelf: 'stretch',

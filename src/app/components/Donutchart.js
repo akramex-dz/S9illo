@@ -49,7 +49,7 @@ const Donut = ({
             const strokeDashoffset = circumference - (circumference * maxPerc * 0.8) / 100;
             if (inputRef?.current) {
                 inputRef.current.setNativeProps({
-                    text: `${Math.round(v.value)}`,
+                    text: `${Math.round(v.value)}%`,
                 });
             }
             if (circleRef?.current) {
@@ -119,10 +119,10 @@ const Donut = ({
         </View>
     );
 }
-const Donutchart = () => {
+const Donutchart = ({ p, c }) => {
     return (
         <View style={DonutStyle.container}>
-            <Donut percentage={11} color={'#f90'} delay={500} max={12} />
+            <Donut percentage={p} color={c} delay={500} max={100} />
 
         </View>
     )

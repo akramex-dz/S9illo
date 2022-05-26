@@ -1,8 +1,14 @@
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native'
 import React from 'react'
+import { useNavigation } from "@react-navigation/native";
 
-export default function faillureQR({ navigation }) {
+
+export default function FaillureQR({ navigation, route }) {
+  const { user } = route.params;
+  const navigate = useNavigation();
+
   return (
+
     <View style={{ justifyContent: 'center', alignItems: 'center', backgroundColor: 'white', height: '100%' }}>
 
       <Image source={require('../../assets/images/faillureQRcode.png')} style={{ marginLeft: '19%' }} />
@@ -15,7 +21,8 @@ export default function faillureQR({ navigation }) {
           justifyContent: "center",
           alignItems: "center",
         }}
-        onPress={() => { navigation.replace('QRcodeScanner') }}
+        onPress={() => { navigate.replace('QRcodeScanner', { user }) }}
+
       >
         <Text
           style={{

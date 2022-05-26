@@ -1,7 +1,7 @@
 import { View, Text, Image, TouchableOpacity } from 'react-native'
 import React from 'react'
 
-export default function successQR({ navigation }) {
+export default function SuccessQR({ navigation }) {
   return (
     <View style={{ justifyContent: 'center', alignItems: 'center', backgroundColor: 'white', height: '100%' }}>
 
