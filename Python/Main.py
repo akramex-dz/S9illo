@@ -1,4 +1,5 @@
 from asyncio import tasks
+from re import T
 from Plant import Plant
 from Raspberry import Raspberry
 from Arduino import Arduino
@@ -25,28 +26,6 @@ db = firebase.database()
 
 
 
-""" p1 = Plant(db, True, 0, 0, 1234, 0, 0)
-p2 = Plant(db, True, 1, 1, 1234, 0, 1)
-l1 = [p1, p2] """
-
-""" ard = Arduino(0, 8)
-
-p = Plant(0, 1, 25, 5, 3, "0", 10, 5, True, db ,ard , 1234)
-p1 = Plant(1, 0, 25, 5, 3, "0", 10, 5, True, db ,ard , 1234)
-
-l1 = [p, p1]
-
-ard.list_plante = l1
-
-
-
-l2 = [ard]
-
-
-
-bleutooth = "hey"
-
-rasp = Raspberry(l2, configuration, bleutooth, 1234) """
 
 arduinos_ids = db.child("raspberries").child("1234").child("tabArduino").shallow().get()
 
@@ -55,24 +34,30 @@ arduinos_ids = arduinos_ids.val()
 
 
 list_arduinos = []
+ 
+#also add the local variables in sql
 
 for id_arduino in arduinos_ids :
         
         arduino = db.child("raspberries").child("1234").child("tabArduino").child(str(id_arduino)).get()
         arduino = arduino.val()
-        ard = Arduino( str(id_arduino) , arduino["i2cAdr"])
+        if(arduino["waterLevelSensor"] == False) :
+                ard = Arduino( str(id_arduino) , arduino["i2cAdr"], arduino["waterLevelSensor"])
+        elif(arduino["waterLevelSensor"] == True):
+                ard = Arduino( str(id_arduino) , arduino["i2cAdr"], arduino["waterLevelSensor"], arduino["dataPinWl"], arduino["powerPinWl"])
 
         plants_ids = db.child("raspberries").child("1234").child("tabArduino").child(str(id_arduino)).child("plants").shallow().get()
         plants_ids = plants_ids.val()
-        for id_plant in range(1): #plants_ids :###############################################################
+        for id_plant in plants_ids :
                 plant = db.child("raspberries").child("1234").child("tabArduino").child(str(id_arduino)).child("plants").child(str(id_plant)).get()
                 plant = plant.val()
 
                 intelligent = db.child("raspberries").child("1234").child("tabArduino").child(str(id_arduino)).child("plants").child(str(id_plant)
         ).child("commands").child("smart").get()
                 intelligent = intelligent.val()
-                p = Plant(id_plant, plant["pinVanne"], plant["tMax"], plant["smMax"], plant["powerPinSM"], 
-                plant["dataPinSM"], arduino["dataPinDht"], arduino["powerPinDht"], intelligent["smart"], db, ard, 1234)
+
+                p = Plant(id_plant, plant["pinVanne"], plant["tMax"], plant["smMin"], plant["powerPinSM"], 
+                plant["dataPinSM"], arduino["dataPinDht"], arduino["powerPinDht"], intelligent, db, ard, 1234)
                 
                 ard.list_plante.append(p)
 
@@ -91,21 +76,26 @@ rasp = Raspberry(list_arduinos, configuration, 1234)
 
 
 
-""" for arduino in rasp.list_arduino:
-        for plant in arduino.list_plante:
-                if(plant.intelligent == True):
-                        data = {"active" : True, "duration" : 5}           # 30 second pour le test de demain
-                        db.child("raspberries").child(str(rasp.id_raspberry)).child("tabArduino").child(str(arduino.id_arduino)).child("plants").child(str(plant.id_plante)).child("commands").child("manual").set(data) """ 
+
 
 async def boucle():
-        #while True:
-                #time.sleep(30)
+        while True:
 
+                #if there is internet:
+                        # upload to firebase 
+                
                 for arduino in rasp.list_arduino:
+                        if(arduino.waterLevelSensor == True):
+                                arduino.recuperer_valeur_eau( arduino.pinWL, arduino.powerPinWL, rasp ) 
+
+
+                                db.child("raspberries").child("1234").child("waterLevel").set(rasp.waterLevel) 
+                        print(f"inside the arduino {arduino.id_arduino}")
+
                         for plant in arduino.list_plante:
-                                
+                                print(f"inside the plant {plant.id_plante}")
                                 if(plant.intelligent == True):
-                                        #task = asyncio.create_task(rasp.arrosage_automatic(plant))
+                                        
                                         
                                         plant.linked_arduino.recuperer_valeur_temp(plant.pin_data_dht, plant.pin_power_dht, plant)
 
@@ -117,7 +107,7 @@ async def boucle():
                                         time.sleep(0.5)
 
                                         plant.linked_arduino.recuperer_valeur_humid(plant.pin_data_dht, plant.pin_power_dht, plant)
-
+                                                
                                         data = {"airHumidity": plant.valeur_actuelle_humid,
                                         "soilMoisture": plant.valeur_actuelle_sol ,
                                         "temperature": plant.valeur_actuelle_temp
@@ -129,15 +119,17 @@ async def boucle():
                                         ).child("valeursActuelles").set(data)
 
                                         tab_temp = db.child("raspberries").child("1234").child("tabArduino").child(str(plant.linked_arduino.id_arduino)).child("plants").child(str(plant.id_plante)
-                                        ).child("temperature").shallow().get()
+                                        ).child("temperature").shallow().get() 
                                         
+                                        indice_temp = []
                                         
-
                                         for id_last in tab_temp.val() :
                                                 id_last = id_last
-
-                                        
-                                        id_last = int(id_last)+1
+                                                indice_temp.append(id_last)
+                                        indice_temp.sort()
+                                        id_last = indice_temp[-1]
+                                                
+                                        id_last = int(id_last) + 1
 
                                         now = datetime.now()
                                         current_date = now.strftime("%d/%m/%Y")
@@ -154,11 +146,16 @@ async def boucle():
                                         tab_sm = db.child("raspberries").child("1234").child("tabArduino").child(str(plant.linked_arduino.id_arduino)).child("plants").child(str(plant.id_plante)
                                         ).child("soilMoisture").shallow().get()
                                         
-                                        
+                                        indice_sm = []
 
                                         for id_last in tab_sm.val() :
                                                 
                                                 id_last = id_last
+                                                indice_sm.append(id_last)
+
+                                        indice_sm.sort()
+                                        id_last = indice_sm[-1]
+                                                
                                                 
                                         id_last = int(id_last)+1
 
@@ -173,12 +170,15 @@ async def boucle():
                                         tab_hum = db.child("raspberries").child("1234").child("tabArduino").child(str(plant.linked_arduino.id_arduino)).child("plants").child(str(plant.id_plante)
                                         ).child("airHumidity").shallow().get()
                                         
-                                        
+                                        indice_humd = []
 
                                         for id_last in tab_hum.val() :
                                                 
                                                 id_last = id_last
-                                                print(id_last)
+                                                indice_humd.append(id_last)
+
+                                        indice_humd.sort()
+                                        id_last = indice_humd[-1]
                                                 
                                         id_last = int(id_last)+1
 
@@ -196,7 +196,7 @@ async def boucle():
                                         #print(f"valeur actuelle du temp plante {plant.id_plante} est {plant.valeur_actuelle_temp}")
                                         #print(f"seuil temp {plant.seuille_temp}")
 
-                                        if((plant.valeur_actuelle_sol >= plant.seuille_sol) or (plant.valeur_actuelle_temp >= plant.seuille_temp)):
+                                        if((plant.valeur_actuelle_sol <= plant.seuille_sol) or (plant.valeur_actuelle_temp >= plant.seuille_temp)):
                                                 #global task 
                                                 task = asyncio.create_task(arduino.actioner_vanne(plant.pin_vanne, 5))
                                                 #print(f"arosage de plant {plant.id_plante}")
@@ -204,8 +204,10 @@ async def boucle():
                                         
                 
                 await task
+                time.sleep(10)
+        #await task
 
-
+ 
 async def main():
         
 

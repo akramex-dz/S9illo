@@ -13,6 +13,7 @@ class Raspberry:
         self.list_arduino = list_arduino
         self.configuration = firebase
         self.id_raspberry = id_rasp
+        self.waterLevel = 0
 
     def arrosage_automatic(self, plant):
         

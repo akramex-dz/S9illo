@@ -13,11 +13,15 @@ from time import sleep
 class Arduino:
 
     
-    def __init__(self, id, address):
+    def __init__(self, id, address, waterLevelSensor, pinWaterLevel = 0, powerPinWaterLevel = 0):
 
         self.id_arduino = id
         self.list_plante = []
         self.address = address
+        self.waterLevelSensor = waterLevelSensor
+        if(waterLevelSensor == True):
+            self.pinWL = pinWaterLevel
+            self.powerPinWL = powerPinWaterLevel
 
     
     def recuperer_valeur_sol(self, pin, power_pin, plant):
@@ -60,6 +64,48 @@ class Arduino:
         
         if ( cpt == 3):
             print("erreur dans la fonction recuperer_valeur_sol")
+            # on  doit envoyer un message d'erreur vers l'app 
+
+
+    def recuperer_valeur_eau(self, pin, power_pin, raspberry):
+        
+        bus = smbus.SMBus(1)
+        address = self.address
+        if(power_pin <= 9):
+            order = "5A" + str(pin) + "0" + str(power_pin) 
+        elif(power_pin >= 10):
+            order = "5A" + str(pin) + str(power_pin) 
+
+        
+        l1 = []         #list des bytes
+        for c in order:
+            l1.append(ord(c))                               #transfer vers les bytes
+        stop = False
+        cpt = 0
+        
+
+        while not stop and cpt < 3 : 
+
+            
+            bus.write_i2c_block_data(address, 0x00, l1)
+            rep = bus.read_i2c_block_data(address, 0)
+            string = ''
+            for i in range(0, 6):               #l'information contient 6 characters
+                string += chr(rep[i])
+            pass_bien = string[1]               #est egale a 1 si la l'information a etait bien envoyer et 0 si l'information n'etait pas bien envoyer
+            
+            
+            if(pass_bien == "1"):
+                valeur = string[2:]
+                i = 0
+                
+                raspberry.waterLevel = float(valeur)
+                stop = True
+            else:
+                cpt += 1
+        
+        if ( cpt == 3):
+            print("erreur dans la fonction recuperer_valeur_eau")
             # on  doit envoyer un message d'erreur vers l'app 
 
 
