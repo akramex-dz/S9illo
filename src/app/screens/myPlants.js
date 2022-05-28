@@ -12,6 +12,7 @@ import { useEffect, useState } from "react";
 import PlantCard from "../components/PlantCard";
 import FloatingActionButton from "../components/FloatingActionButton";
 import CheckBox from "../components/CheckBox";
+import Header from "../components/Header"
 
 export default function MyPlants({ plants, navigation, idRaspBerry, index }) {
   const [displayDelete, setDisplayDelete] = useState(false);
@@ -31,6 +32,8 @@ export default function MyPlants({ plants, navigation, idRaspBerry, index }) {
         height: "100%",
       }}
     >
+      <Header />
+
       <View
         style={{
           height: (75 * Dimensions.get("screen").height) / 100,
@@ -41,7 +44,6 @@ export default function MyPlants({ plants, navigation, idRaspBerry, index }) {
           style={{
             flexDirection: "row",
             width: "100%",
-            marginTop: 10,
             alignItems: "center",
           }}
         >

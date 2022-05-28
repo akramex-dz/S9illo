@@ -36,6 +36,7 @@ export default function MainContainer() {
                 snapshot.val().forEach((childSnapshot) => {
                     childSnapshot["plants"].forEach((childChildSnapshot) => {
                         plants.push({ ...childChildSnapshot });
+                        console.log(childChildSnapshot);
                         if (((childChildSnapshot.valeursActuelles).soilMoisture) > 20 && ((childChildSnapshot.valeursActuelles).soilMoisture) < 60) {
                             cpt++;
                             console.log(cpt);
@@ -46,7 +47,6 @@ export default function MainContainer() {
                 // snapshot.val()["data"].forEach((childSnapshot, index) => {
                 //     plants.push({ id: index, ...childSnapshot });
                 // });
-                console.log(plants);
                 setPlants(plants);
                 setPlantSeches(cpt * 100 / plants.length);
             }
@@ -146,7 +146,6 @@ export default function MainContainer() {
             }}>
                 {props => <Screen2 {...props} plants={plants} />}
             </Tab.Screen>
-
             <Tab.Screen name={'My Plants'} options={{
                 tabBarIcon: ({ focused }) => (
                     <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1 }}>
@@ -157,6 +156,7 @@ export default function MainContainer() {
                 )
             }} >
                 {props => <MyPlants {...props} plants={plants} />}
+
             </Tab.Screen>
 
         </Tab.Navigator>

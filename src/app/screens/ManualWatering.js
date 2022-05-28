@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { ref, onValue, set, get, update } from "firebase/database"
 import { db } from "../../core/firebase"
-
+import { useNavigation } from "@react-navigation/native";
 import COLORS from "../../data/colors";
 import { useEffect, useState } from "react";
 import FloatingActionButton from "../components/FloatingActionButton";
@@ -22,6 +22,8 @@ export default function ManualWatering({ navigation, route, index }) {
     const [displayDelete, setDisplayDelete] = useState(false);
     const [value, setValue] = useState("");
     const [plantToIrregate, setPlantToIrregate] = useState([]);
+    const navigate = useNavigation();
+
     useEffect(() => {
         console.log(plants);
     }, []);
@@ -95,6 +97,12 @@ export default function ManualWatering({ navigation, route, index }) {
                 height: "100%",
             }}
         >
+            <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginTop: '10%', height: '5%' }}>
+                <Pressable onPress={navigate.goBack} style={{ right: "160%", height: '80%', width: '10%', justifyContent: 'center', alignItems: 'center' }}  >
+                    <Image source={require('../../assets/images/backArrowBlack.png')} style={{ height: "50%" }} resizeMode="contain" />
+
+                </Pressable>
+                <Text style={{ fontFamily: 'CircularStd-Bold', fontSize: 23, color: 'black', right: '50%' }}>Manual watering</Text></View>
             <View
                 style={{
                     flexDirection: "row",

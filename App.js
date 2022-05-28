@@ -18,6 +18,9 @@ import OnBoarding from "./src/app/screens/Onboarding";
 import WateringSettings from './src/app/screens/WateringSettings';
 import SelectPlant from './src/app/screens/SelectPlant';
 import WateringHistory from './src/app/screens/WateringHistory';
+import DrawerScreen from './src/app/screens/DrawerScreen'
+import ContactSupport from './src/app/screens/ContactSupport';
+import Help from './src/app/screens/Help';
 import { auth } from './src/core/firebase';
 import { signOut } from 'firebase/auth';
 // import { createDrawerNavigator } from '@react-navigation/drawer';
@@ -69,14 +72,16 @@ export default function App() {
 
     <NavigationContainer>
       <Stack.Navigator >
-        {/* <Stack.Screen name="OnBoarding" component={OnBoarding} options={{ header: () => null }} /> */}
-        <Stack.Screen name='Main' component={MainContainer} options={{ header: () => null }} />
+        <Stack.Screen name="OnBoarding" component={OnBoarding} options={{ header: () => null }} />
 
         <Stack.Screen name='Login' component={LoginScreen} options={{ header: () => null }} />
         <Stack.Screen name='Register' component={RegisterScreen} options={{ header: () => null }} />
         <Stack.Screen name='QRcodeScanner' component={QRcodeScanner} options={{ header: () => null }} />
         <Stack.Screen name='successQR' component={successQR} options={{ header: () => null }} />
         <Stack.Screen name='faillureQR' component={faillureQR} options={{ header: () => null }} />
+        <Stack.Screen name='Help' component={Help} options={{ header: () => null }} />
+        <Stack.Screen name='Main' component={MainContainer} options={{ header: () => null }} />
+        <Stack.Screen name='DrawerScreen' component={DrawerScreen} options={{ header: () => null }} />
         <Stack.Screen name='SelectPlant' component={SelectPlant} options={{ header: () => null }} />
         <Stack.Screen name='SpecificPlantScreen' component={SpecificPlantSceen} options={{ header: () => null }} />
         <Stack.Screen name='GraphicCardScreen' component={GraphCardScreen} options={{ header: () => null }} />
@@ -84,6 +89,8 @@ export default function App() {
         <Stack.Screen name='Addplant' component={Addplant} options={{ header: () => null }} />
         <Stack.Screen name='ManualWatering' component={ManualWatering} options={{ header: () => null }} />
         <Stack.Screen name='WateringHistory' component={WateringHistory} options={{ header: () => null }} />
+        <Stack.Screen name='ContactSupport' component={ContactSupport} options={{ header: () => null }} />
+
       </Stack.Navigator>
     </NavigationContainer>
     /* <NavigationContainer>

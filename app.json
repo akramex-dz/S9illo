@@ -4,9 +4,9 @@
     "slug": "IOPbeta",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/s9illoicon.png",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/s9illoSplash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },

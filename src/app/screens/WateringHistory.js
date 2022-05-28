@@ -7,10 +7,20 @@ import { TouchableOpacity } from 'react-native';
 import { FlatList } from 'react-native';
 import ProchainsArr from '../../data/PronchainsArr'
 
+import { useNavigation } from "@react-navigation/native";
 
 export default function WateringHistory() {
+    const navigate = useNavigation();
+
     return (
-        <View style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}>
+        <View style={{ justifyContent: 'center', alignItems: 'center', flex: 1, backgroundColor: 'white' }}>
+            <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginTop: '10%', height: '5%', marginBottom: '5%' }}>
+                <Pressable onPress={navigate.goBack} style={{ right: "160%", height: '80%', width: '10%', justifyContent: 'center', alignItems: 'center' }}  >
+                    <Image source={require('../../assets/images/backArrowBlack.png')} style={{ height: "50%" }} resizeMode="contain" />
+
+                </Pressable>
+                <Text style={{ fontFamily: 'CircularStd-Bold', fontSize: 23, color: 'black', right: '50%' }}>Watering history</Text></View>
+
             <FlatList data={ProchainsArr}
                 keyExtractor={(item) => item.id}
                 showsVerticalScrollIndicator={false}

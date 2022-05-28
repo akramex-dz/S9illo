@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "~1.17.3",
+    "@react-native-clipboard/clipboard": "react-native-community/clipboard",
     "@react-navigation/bottom-tabs": "^6.3.1",
     "@react-navigation/drawer": "^6.4.1",
     "@react-navigation/native": "^6.0.10",
@@ -29,6 +30,7 @@
     "react-native": "0.68.2",
     "react-native-chart-kit": "^6.12.0",
     "react-native-checkbox": "^2.0.0",
+    "react-native-clipboard": "^0.0.5",
     "react-native-dropdown-picker": "^5.4.2",
     "react-native-gesture-handler": "~2.2.1",
     "react-native-reanimated": "^2.8.0",

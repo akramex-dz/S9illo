@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import { ref, onValue, set, get, update } from "firebase/database"
 import { db } from "../../core/firebase"
+import { useNavigation } from "@react-navigation/native";
 
 import COLORS from "../../data/colors";
 import { useEffect, useState } from "react";
@@ -21,6 +22,8 @@ export default function SelectPlant({ route, index }) {
     const [sectimevar, setSecTimeVar] = useState("")
     const [displayDelete, setDisplayDelete] = useState(false);
     const [value, setValue] = useState("");
+    const navigate = useNavigation();
+
     const [plantToIrregate, setPlantToIrregate] = useState([]);
     useEffect(() => {
         console.log(plants);
@@ -95,6 +98,13 @@ export default function SelectPlant({ route, index }) {
                 height: "100%",
             }}
         >
+            <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginTop: '10%', height: '5%' }}>
+                <Pressable onPress={navigate.goBack} style={{ right: "200%", height: '80%', width: '10%', justifyContent: 'center', alignItems: 'center' }}  >
+                    <Image source={require('../../assets/images/backArrowBlack.png')} style={{ height: "50%" }} resizeMode="contain" />
+
+                </Pressable>
+                <Text style={{ fontFamily: 'CircularStd-Bold', fontSize: 23, color: 'black', right: '50%' }}>Select a plant</Text></View>
+
             <View
                 style={{
                     flexDirection: "row",

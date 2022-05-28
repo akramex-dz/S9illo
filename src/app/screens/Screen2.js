@@ -3,6 +3,7 @@ import { auth, db } from '../../core/firebase'
 import { ref, onValue, set } from "firebase/database"
 import React, { useState, useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
+import Header from "../components/Header"
 
 export default function Screen2({ navigation, plants }) {
     const [loading, setLoading] = useState(false);
@@ -43,7 +44,8 @@ export default function Screen2({ navigation, plants }) {
         // </View>
 
 
-        <View style={{ justifyContent: 'center', flex: 1, alignItems: 'center', backgroundColor: '#fff', marginTop: '5%' }}>
+        <View style={{ flex: 1, alignItems: 'center', backgroundColor: '#fff' }}>
+            <Header />
 
             <View style={styles.card}>
 

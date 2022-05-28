@@ -42,15 +42,13 @@ export default function GraphCardScreen({ navigation, route }) {
     <View>
       <ScrollView style={{ height: '100%', width: '100%', backgroundColor: '#07D779' }}>
         <View style={{ backgroundColor: '#07D779', width: '100%' }}>
-          <View style={{ flexDirection: 'row' }}>
-            {/* <TouchableOpacity onPress={navigation.goBack()}> */}
-            <Image source={require('../../assets/images/backArrow.png')} style={{ marginLeft: 21.5, marginTop: 29.5, width: 40, justifyContent: 'flex-start' }} resizeMode={'contain'} />
-            {/* </TouchableOpacity> */}
-            <Text style={{ fontSize: 20, fontWeight: '700', color: 'white', marginLeft: 165, marginTop: 27, position: 'absolute' }}>
-              {/* <Text style={{fontSize:20,fontWeight:'700',color:'white',marginTop:27, textAlign:"center", alignSelf:'center'}}> */}
-              Details
-            </Text>
-          </View>
+          <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginTop: '10%', height: '10%' }}>
+            <Pressable onPress={navigate.goBack} style={{ right: "150%", height: '80%', width: '10%', justifyContent: 'center', alignItems: 'center' }}  >
+              <Image source={require('../../assets/images/backArrow.png')} style={{ height: "50%" }} resizeMode="contain" />
+
+            </Pressable>
+            <Text style={{ fontFamily: 'CircularStd-Bold', fontSize: 23, color: 'white', right: '50%' }}>Graphical data</Text></View>
+
           <View style={{ flexDirection: 'row' }}>
             <View>
               <Text style={{ fontSize: 28, fontWeight: '700', color: 'white', marginTop: 60, marginLeft: 20 }}>

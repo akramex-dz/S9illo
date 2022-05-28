@@ -107,292 +107,300 @@ export default function WateringSettings({ navigation, route }) {
 
 
     return (
-        <ScrollView style={{ backgroundColor: 'white' }}>
-            <View style={{ alignItems: 'center', flex: 1 }}>
-                <View style={{
-                    shadowColor: '#000',
-                    shadowOffset: { width: 0, height: 2 },
-                    shadowOpacity: 0.5,
-                    shadowRadius: 2,
-                    elevation: 4,
-                    width: 300,
-                    height: 300,
-                    backgroundColor: 'white',
-                    borderRadius: 10,
-                    marginTop: 50,
-                    alignItems: 'center'
-                }}>
-                    <Image source={img} resizeMode={'contain'} style={{ marginTop: 30 }} />
-                    <Text style={{ fontSize: 16, fontWeight: '700', color: '#00000050', marginTop: 17 }}>
-                        {text}
-                    </Text>
-                    <View style={{ marginTop: 20 }}>
-                        <Switch
-                            onValueChange={toggleSwitch}
-                            value={isEnabled}
-                            activeText={'automatic'}
-                            inActiveText={'manual'}
-                            backgroundActive={'#07D779'}
-                            backgroundInactive={'#E8E8E8'}
-                            circleActiveColor={'white'}
-                            circleInActiveColor={'white'}
-                            circleBorderWidth={0}
-                            switchWidthMultiplier={3.5}
+        <View style={{ flex: 1, backgroundColor: 'white' }}>
+            <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginTop: '10%', height: '5%' }}>
+                <Pressable onPress={navigate.goBack} style={{ right: "140%", height: '80%', width: '10%', justifyContent: 'center', alignItems: 'center' }}  >
+                    <Image source={require('../../assets/images/backArrowBlack.png')} style={{ height: "50%" }} resizeMode="contain" />
+
+                </Pressable>
+                <Text style={{ fontFamily: 'CircularStd-Bold', fontSize: 23, color: 'black', right: '50%' }}>Watering Settings</Text></View>
+            <ScrollView>
+                <View style={{ alignItems: 'center', flex: 1 }}>
+                    <View style={{
+                        shadowColor: '#000',
+                        shadowOffset: { width: 0, height: 2 },
+                        shadowOpacity: 0.5,
+                        shadowRadius: 2,
+                        elevation: 4,
+                        width: 300,
+                        height: 300,
+                        backgroundColor: 'white',
+                        borderRadius: 10,
+                        marginTop: 50,
+                        alignItems: 'center'
+                    }}>
+                        <Image source={img} resizeMode={'contain'} style={{ marginTop: 30 }} />
+                        <Text style={{ fontSize: 16, fontWeight: '700', color: '#00000050', marginTop: 17 }}>
+                            {text}
+                        </Text>
+                        <View style={{ marginTop: 20 }}>
+                            <Switch
+                                onValueChange={toggleSwitch}
+                                value={isEnabled}
+                                activeText={'automatic'}
+                                inActiveText={'manual'}
+                                backgroundActive={'#07D779'}
+                                backgroundInactive={'#E8E8E8'}
+                                circleActiveColor={'white'}
+                                circleInActiveColor={'white'}
+                                circleBorderWidth={0}
+                                switchWidthMultiplier={3.5}
+                            />
+                        </View>
+                    </View>
+
+                    <View style={{
+                        shadowColor: '#000',
+                        shadowOffset: { width: 0, height: 2 },
+                        shadowOpacity: 0.5,
+                        shadowRadius: 2,
+                        elevation: 3,
+                        width: 350,
+                        height: 80,
+                        backgroundColor: 'white',
+                        borderRadius: 10,
+                        marginTop: 30,
+                        flexDirection: 'row'
+                    }}>
+                        <Image
+                            resizeMode="contain"
+                            style={{ height: 50, width: 50, borderRadius: 10, marginLeft: '5%', alignSelf: 'center' }}
+                            source={plant.picture ? {
+                                uri: plant.picture,
+                            } : require('../../assets/myPlants/plants/plant1.png')}
                         />
+                        <View style={{ flex: 1, left: '20%', alignSelf: 'center' }}>
+                            <Text style={{
+                                color: COLORS.GREEN, fontFamily: 'CircularStd-Bold', fontSize: 17
+                            }}>
+                                {plant.displayName}
+                            </Text>
+                            <Text style={{ color: COLORS.GRAY, fontFamily: 'CircularStd-Medium', }}>{plant.specie}</Text>
+                        </View>
+                        <TouchableOpacity onPress={() => navigate.goBack()} style={{ width: 110, height: 30, borderRadius: 10, backgroundColor: !isEnabled ? '#07D779' : '#00000025', alignItems: 'center', justifyContent: 'center', alignSelf: 'center', marginRight: 20 }}>
+                            <Text style={{ fontSize: 14, fontWeight: '700', color: 'white' }}>
+                                Select plant
+                            </Text>
+                        </TouchableOpacity>
                     </View>
+
+                    <Text style={{ fontSize: 22, fontWeight: '700', color: '#00000075', marginRight: 250, marginTop: 20, marginBottom: 15 }}>
+                        Schedule
+                    </Text>
+
+                    <FlatList showsHorizontalScrollIndicator={false} contentContainerStyle={{}} horizontal data={weeks} keyExtractor={item => item} renderItem={({ item }) => <TouchableOpacity onPress={() => { setIndex(item) }} >
+                        <View style={index === item ? { margin: 10, height: 34, width: 86, backgroundColor: !isEnabled ? '#07D779' : '#00000025', alignItems: 'center', justifyContent: 'center', borderRadius: 5 } : { margin: 10, height: 34, width: 86, backgroundColor: !isEnabled ? '#E8E8E8' : '#00000025', alignItems: 'center', justifyContent: 'center', borderRadius: 5 }}>
+                            <Text style={{ fontWeight: '700', fontSize: 14, color: !isEnabled ? '#595959' : 'white' }}>
+                                week {item}
+                            </Text>
+                        </View>
+
+                    </TouchableOpacity>} />
+
+                    <ScrollView showsHorizontalScrollIndicator={false} horizontal={true} flexDirection='row' contentContainerStyle={{ justifyContent: 'space-around', marginTop: 5 }}>
+                        <View style={{ marginHorizontal: 10 }}>
+                            <View style={{ height: 9, width: 165, backgroundColor: !isEnabled ? '#07D779' : '#00000025', borderRadius: 5 }} />
+                            <Text style={{ fontSize: 14, fontWeight: '500', color: '#00000055', marginLeft: 10, marginTop: 4 }} >
+                                Sunday
+                            </Text>
+                            <View>
+                                <FlatList data={(index == 1) ? hoursWeek1[0] : ((index == 2) ? hoursWeek2[0] : ((index == 3) ? hoursWeek3[0] : hoursWeek4[0]))}
+                                    keyExtractor={(_, index) => index}
+                                    renderItem={({ item }) => <View>
+                                        <Text style={{ fontSize: 14, fontWeight: '500', color: '#00000055', marginLeft: 7, marginTop: 4 }}>
+                                            {item.time} for {item.minutes} min {item.secondes} s
+                                        </Text>
+                                    </View>} />
+                                <Text onPress={() => { setModalVisible(true); addTimeHandler(0) }} style={{ fontWeight: '700', fontSize: 12, color: !isEnabled ? '#07D779' : '#00000025', marginLeft: 7, marginTop: 4, marginBottom: 10 }} >
+                                    + Add Time
+                                </Text>
+                            </View>
+
+
+                        </View>
+
+                        <View style={{ marginHorizontal: 10 }}>
+                            <View style={{ height: 9, width: 165, backgroundColor: !isEnabled ? '#07D779' : '#00000025', borderRadius: 5 }} />
+                            <Text style={{ fontSize: 14, fontWeight: '500', color: '#00000055', marginLeft: 12, marginTop: 4 }} >
+                                Monday
+                            </Text>
+                            <View>
+                                <FlatList data={(index == 1) ? hoursWeek1[1] : ((index == 2) ? hoursWeek2[1] : ((index == 3) ? hoursWeek3[1] : hoursWeek4[1]))}
+                                    keyExtractor={(_, index) => index}
+                                    renderItem={({ item }) => <View>
+                                        <Text style={{ fontSize: 14, fontWeight: '500', color: '#00000055', marginLeft: 12, marginTop: 4 }}>
+                                            {item.time} for {item.minutes} min {item.secondes} s
+                                        </Text>
+                                    </View>} />
+                                <Text onPress={() => { setModalVisible(true); addTimeHandler(1) }} style={{ fontWeight: '700', fontSize: 12, color: !isEnabled ? '#07D779' : '#00000025', marginLeft: 10, marginTop: 4, marginBottom: 10 }}>
+                                    + Add Time
+                                </Text>
+                            </View>
+
+                        </View>
+
+                        <View style={{ marginHorizontal: 10 }}>
+                            <View style={{ height: 9, width: 165, backgroundColor: !isEnabled ? '#07D779' : '#00000025', borderRadius: 5 }} />
+                            <Text style={{ fontSize: 14, fontWeight: '500', color: '#00000055', marginLeft: 12, marginTop: 4 }} >
+                                Tuesday
+                            </Text>
+                            <View>
+                                <FlatList data={(index == 1) ? hoursWeek1[2] : ((index == 2) ? hoursWeek2[2] : ((index == 3) ? hoursWeek3[3] : hoursWeek4[4]))}
+                                    keyExtractor={(_, index) => index}
+                                    renderItem={({ item }) => <View>
+                                        <Text style={{ fontSize: 14, fontWeight: '500', color: '#00000055', marginLeft: 12, marginTop: 4 }}>
+                                            {item.time} for {item.minutes} min {item.secondes} s
+                                        </Text>
+                                    </View>} />
+                                <Text onPress={() => { setModalVisible(true); addTimeHandler(2) }} style={{ fontWeight: '700', fontSize: 12, color: !isEnabled ? '#07D779' : '#00000025', marginLeft: 10, marginTop: 4, marginBottom: 10 }}>
+                                    + Add Time
+                                </Text>
+                            </View>
+
+                        </View>
+
+                        <View style={{ marginHorizontal: 10 }}>
+                            <View style={{ height: 9, width: 165, backgroundColor: !isEnabled ? '#07D779' : '#00000025', borderRadius: 5 }} />
+                            <Text style={{ fontSize: 14, fontWeight: '500', color: '#00000055', marginLeft: 12, marginTop: 4 }} >
+                                Wednesday
+                            </Text>
+                            <View>
+                                <FlatList data={(index == 1) ? hoursWeek1[3] : ((index == 2) ? hoursWeek2[3] : ((index == 3) ? hoursWeek3[3] : hoursWeek4[3]))}
+                                    keyExtractor={(_, index) => index}
+                                    renderItem={({ item }) => <View>
+                                        <Text style={{ fontSize: 14, fontWeight: '500', color: '#00000055', marginLeft: 12, marginTop: 4 }}>
+                                            {item.time} for {item.minutes} min {item.secondes} s
+                                        </Text>
+                                    </View>} />
+                                <Text onPress={() => { setModalVisible(true); addTimeHandler(3) }} style={{ fontWeight: '700', fontSize: 12, color: !isEnabled ? '#07D779' : '#00000025', marginLeft: 10, marginTop: 4, marginBottom: 10 }}>
+                                    + Add Time
+                                </Text>
+                            </View>
+
+                        </View>
+
+                        <View style={{ marginHorizontal: 10 }}>
+                            <View style={{ height: 9, width: 165, backgroundColor: !isEnabled ? '#07D779' : '#00000025', borderRadius: 5 }} />
+                            <Text style={{ fontSize: 14, fontWeight: '500', color: '#00000055', marginLeft: 12, marginTop: 4 }} >
+                                Thursday
+                            </Text>
+                            <View>
+                                <FlatList data={(index == 1) ? hoursWeek1[4] : ((index == 2) ? hoursWeek2[4] : ((index == 3) ? hoursWeek3[4] : hoursWeek4[4]))}
+                                    keyExtractor={(_, index) => index}
+                                    renderItem={({ item }) => <View>
+                                        <Text style={{ fontSize: 14, fontWeight: '500', color: '#00000055', marginLeft: 12, marginTop: 4 }}>
+                                            {item.time} for {item.minutes} min {item.secondes} s
+                                        </Text>
+                                    </View>} />
+                                <Text onPress={() => { setModalVisible(true); addTimeHandler(4) }} style={{ fontWeight: '700', fontSize: 12, color: !isEnabled ? '#07D779' : '#00000025', marginLeft: 10, marginTop: 4, marginBottom: 10 }}>
+                                    + Add Time
+                                </Text>
+                            </View>
+
+                        </View>
+
+                        <View style={{ marginHorizontal: 10 }}>
+                            <View style={{ height: 9, width: 165, backgroundColor: !isEnabled ? '#07D779' : '#00000025', borderRadius: 5 }} />
+                            <Text style={{ fontSize: 14, fontWeight: '500', color: '#00000055', marginLeft: 12, marginTop: 4 }} >
+                                Friday
+                            </Text>
+                            <View>
+                                <FlatList data={(index == 1) ? hoursWeek1[5] : ((index == 2) ? hoursWeek2[5] : ((index == 3) ? hoursWeek3[5] : hoursWeek4[5]))}
+                                    keyExtractor={(_, index) => index}
+                                    renderItem={({ item }) => <View>
+                                        <Text style={{ fontSize: 14, fontWeight: '500', color: '#00000055', marginLeft: 12, marginTop: 4 }}>
+                                            {item.time} for {item.minutes} min {item.secondes} s
+                                        </Text>
+                                    </View>} />
+                                <Text onPress={() => { setModalVisible(true); addTimeHandler(5) }} style={{ fontWeight: '700', fontSize: 12, color: !isEnabled ? '#07D779' : '#00000025', marginLeft: 10, marginTop: 4, marginBottom: 10 }}>
+                                    + Add Time
+                                </Text>
+                            </View>
+
+                        </View>
+
+                        <View style={{ marginHorizontal: 10 }}>
+                            <View style={{ height: 9, width: 165, backgroundColor: !isEnabled ? '#07D779' : '#00000025', borderRadius: 5 }} />
+                            <Text style={{ fontSize: 14, fontWeight: '500', color: '#00000055', marginLeft: 12, marginTop: 4 }} >
+                                Saturday
+                            </Text>
+                            <View>
+                                <FlatList data={(index == 1) ? hoursWeek1[6] : ((index == 2) ? hoursWeek2[6] : ((index == 3) ? hoursWeek3[6] : hoursWeek4[6]))}
+                                    keyExtractor={(_, index) => index}
+                                    renderItem={({ item }) => <View>
+                                        <Text style={{ fontSize: 14, fontWeight: '500', color: '#00000055', marginLeft: 12, marginTop: 4 }}>
+                                            {item.time} for {item.minutes} min {item.secondes} s
+                                        </Text>
+                                    </View>} />
+                                <Text onPress={() => { setModalVisible(true); addTimeHandler(6) }} style={{ fontWeight: '700', fontSize: 12, color: !isEnabled ? '#07D779' : '#00000025', marginLeft: 10, marginTop: 4, marginBottom: 10 }}>
+                                    + Add Time
+                                </Text>
+                            </View>
+                        </View>
+
+
+                    </ScrollView>
+                    <Modal visible={modalVisible} transparent={true}>
+                        <View style={{ justifyContent: 'center', alignItems: 'center', flex: 1, backgroundColor: '#00000070' }}>
+                            <View style={{ height: 237, width: 312, backgroundColor: '#FFFFFF', borderRadius: 15, alignItems: 'center' }}>
+                                <Text style={{ fontSize: 24, fontWeight: '700', color: '#00000075', marginTop: 21 }}>
+                                    Add Time
+                                </Text>
+                                <View style={{ flexDirection: 'row', marginTop: 10 }}>
+                                    <Text style={{ fontSize: 20, fontWeight: '500', color: '#00000075', marginLeft: 10 }}>
+                                        at :
+                                    </Text>
+                                    <TextInput onChangeText={(text) => { setTimeVar1(text) }} keyboardType='number-pad' style={{ height: 29, width: 42, borderRadius: 4, borderWidth: 1, borderColor: '#E5E7F0', marginLeft: 10, paddingHorizontal: 10 }} />
+                                    <Text style={{ fontSize: 20, fontWeight: '500', color: '#00000075', marginLeft: 10 }}>
+                                        :
+                                    </Text>
+                                    <TextInput onChangeText={(text) => { setTimeVar2(text) }} keyboardType='number-pad' style={{ height: 29, width: 42, borderRadius: 4, borderWidth: 1, borderColor: '#E5E7F0', marginLeft: 10, paddingHorizontal: 10 }} />
+                                </View>
+
+
+                                <View style={{ flexDirection: 'row', marginTop: 20 }}>
+                                    <Text style={{ fontSize: 20, fontWeight: '500', color: '#00000075', marginLeft: 10 }}>
+                                        for :
+                                    </Text>
+                                    <TextInput onChangeText={(text) => { setMinTimeVar(text) }} keyboardType='number-pad' style={{ height: 29, width: 42, borderRadius: 4, borderWidth: 1, borderColor: '#E5E7F0', marginLeft: 10, paddingHorizontal: 10 }} />
+                                    <Text style={{ fontSize: 20, fontWeight: '500', color: '#00000075', marginLeft: 10 }}>
+                                        min
+                                    </Text>
+                                    <TextInput onChangeText={(text) => { setSecTimeVar(text) }} keyboardType='number-pad' style={{ height: 29, width: 42, borderRadius: 4, borderWidth: 1, borderColor: '#E5E7F0', marginLeft: 10, paddingHorizontal: 10 }} />
+                                    <Text style={{ fontSize: 20, fontWeight: '500', color: '#00000075', marginLeft: 10 }}>
+                                        s
+                                    </Text>
+                                </View>
+
+                                <View style={{ flexDirection: 'row', marginTop: 20 }}>
+                                    <Pressable onPress={() => setModalVisible(!modalVisible)} style={{ borderRadius: 13, backgroundColor: '#00000070', alignItems: 'center', justifyContent: 'center', flexDirection: 'row', height: 42, width: 119, margin: 7 }}>
+                                        <Image source={require('../../assets/images/x-circle.png')} />
+                                        <Text style={{ fontSize: 14, fontWeight: '700', color: '#FFFFFF', marginLeft: 5 }}>
+                                            Anuler
+                                        </Text>
+                                    </Pressable>
+                                    <Pressable onPress={addhandler} style={{ borderRadius: 13, backgroundColor: '#07D779', alignItems: 'center', justifyContent: 'center', flexDirection: 'row', height: 42, width: 119, margin: 7 }}>
+                                        <Image source={require('../../assets/images/check.png')} />
+                                        <Text style={{ fontSize: 14, fontWeight: '700', color: '#FFFFFF', marginLeft: 5 }}>
+                                            Confirmer
+                                        </Text>
+                                    </Pressable>
+                                </View>
+                            </View>
+                        </View>
+                    </Modal>
+
+
+
+
+
+
+
+
                 </View>
+            </ScrollView>
 
-                <View style={{
-                    shadowColor: '#000',
-                    shadowOffset: { width: 0, height: 2 },
-                    shadowOpacity: 0.5,
-                    shadowRadius: 2,
-                    elevation: 3,
-                    width: 350,
-                    height: 80,
-                    backgroundColor: 'white',
-                    borderRadius: 10,
-                    marginTop: 30,
-                    flexDirection: 'row'
-                }}>
-                    <Image
-                        resizeMode="contain"
-                        style={{ height: 50, width: 50, borderRadius: 10, marginLeft: '5%', alignSelf: 'center' }}
-                        source={plant.picture ? {
-                            uri: plant.picture,
-                        } : require('../../assets/myPlants/plants/plant1.png')}
-                    />
-                    <View style={{ flex: 1, left: '20%', alignSelf: 'center' }}>
-                        <Text style={{
-                            color: COLORS.GREEN, fontFamily: 'CircularStd-Bold', fontSize: 17
-                        }}>
-                            {plant.displayName}
-                        </Text>
-                        <Text style={{ color: COLORS.GRAY, fontFamily: 'CircularStd-Medium', }}>{plant.specie}</Text>
-                    </View>
-                    <TouchableOpacity onPress={() => navigate.goBack()} style={{ width: 110, height: 30, borderRadius: 10, backgroundColor: !isEnabled ? '#07D779' : '#00000025', alignItems: 'center', justifyContent: 'center', alignSelf: 'center', marginRight: 20 }}>
-                        <Text style={{ fontSize: 14, fontWeight: '700', color: 'white' }}>
-                            Select plant
-                        </Text>
-                    </TouchableOpacity>
-                </View>
-
-                <Text style={{ fontSize: 22, fontWeight: '700', color: '#00000075', marginRight: 250, marginTop: 20, marginBottom: 15 }}>
-                    Schedule
-                </Text>
-
-                <FlatList showsHorizontalScrollIndicator={false} contentContainerStyle={{}} horizontal data={weeks} keyExtractor={item => item} renderItem={({ item }) => <TouchableOpacity onPress={() => { setIndex(item) }} >
-                    <View style={index === item ? { margin: 10, height: 34, width: 86, backgroundColor: !isEnabled ? '#07D779' : '#00000025', alignItems: 'center', justifyContent: 'center', borderRadius: 5 } : { margin: 10, height: 34, width: 86, backgroundColor: !isEnabled ? '#E8E8E8' : '#00000025', alignItems: 'center', justifyContent: 'center', borderRadius: 5 }}>
-                        <Text style={{ fontWeight: '700', fontSize: 14, color: !isEnabled ? '#595959' : 'white' }}>
-                            week {item}
-                        </Text>
-                    </View>
-
-                </TouchableOpacity>} />
-
-                <ScrollView showsHorizontalScrollIndicator={false} horizontal={true} flexDirection='row' contentContainerStyle={{ justifyContent: 'space-around', marginTop: 5 }}>
-                    <View style={{ marginHorizontal: 10 }}>
-                        <View style={{ height: 9, width: 165, backgroundColor: !isEnabled ? '#07D779' : '#00000025', borderRadius: 5 }} />
-                        <Text style={{ fontSize: 14, fontWeight: '500', color: '#00000055', marginLeft: 10, marginTop: 4 }} >
-                            Sunday
-                        </Text>
-                        <View>
-                            <FlatList data={(index == 1) ? hoursWeek1[0] : ((index == 2) ? hoursWeek2[0] : ((index == 3) ? hoursWeek3[0] : hoursWeek4[0]))}
-                                keyExtractor={(_, index) => index}
-                                renderItem={({ item }) => <View>
-                                    <Text style={{ fontSize: 14, fontWeight: '500', color: '#00000055', marginLeft: 7, marginTop: 4 }}>
-                                        {item.time} for {item.minutes} min {item.secondes} s
-                                    </Text>
-                                </View>} />
-                            <Text onPress={() => { setModalVisible(true); addTimeHandler(0) }} style={{ fontWeight: '700', fontSize: 12, color: !isEnabled ? '#07D779' : '#00000025', marginLeft: 7, marginTop: 4, marginBottom: 10 }} >
-                                + Add Time
-                            </Text>
-                        </View>
-
-
-                    </View>
-
-                    <View style={{ marginHorizontal: 10 }}>
-                        <View style={{ height: 9, width: 165, backgroundColor: !isEnabled ? '#07D779' : '#00000025', borderRadius: 5 }} />
-                        <Text style={{ fontSize: 14, fontWeight: '500', color: '#00000055', marginLeft: 12, marginTop: 4 }} >
-                            Monday
-                        </Text>
-                        <View>
-                            <FlatList data={(index == 1) ? hoursWeek1[1] : ((index == 2) ? hoursWeek2[1] : ((index == 3) ? hoursWeek3[1] : hoursWeek4[1]))}
-                                keyExtractor={(_, index) => index}
-                                renderItem={({ item }) => <View>
-                                    <Text style={{ fontSize: 14, fontWeight: '500', color: '#00000055', marginLeft: 12, marginTop: 4 }}>
-                                        {item.time} for {item.minutes} min {item.secondes} s
-                                    </Text>
-                                </View>} />
-                            <Text onPress={() => { setModalVisible(true); addTimeHandler(1) }} style={{ fontWeight: '700', fontSize: 12, color: !isEnabled ? '#07D779' : '#00000025', marginLeft: 10, marginTop: 4, marginBottom: 10 }}>
-                                + Add Time
-                            </Text>
-                        </View>
-
-                    </View>
-
-                    <View style={{ marginHorizontal: 10 }}>
-                        <View style={{ height: 9, width: 165, backgroundColor: !isEnabled ? '#07D779' : '#00000025', borderRadius: 5 }} />
-                        <Text style={{ fontSize: 14, fontWeight: '500', color: '#00000055', marginLeft: 12, marginTop: 4 }} >
-                            Tuesday
-                        </Text>
-                        <View>
-                            <FlatList data={(index == 1) ? hoursWeek1[2] : ((index == 2) ? hoursWeek2[2] : ((index == 3) ? hoursWeek3[3] : hoursWeek4[4]))}
-                                keyExtractor={(_, index) => index}
-                                renderItem={({ item }) => <View>
-                                    <Text style={{ fontSize: 14, fontWeight: '500', color: '#00000055', marginLeft: 12, marginTop: 4 }}>
-                                        {item.time} for {item.minutes} min {item.secondes} s
-                                    </Text>
-                                </View>} />
-                            <Text onPress={() => { setModalVisible(true); addTimeHandler(2) }} style={{ fontWeight: '700', fontSize: 12, color: !isEnabled ? '#07D779' : '#00000025', marginLeft: 10, marginTop: 4, marginBottom: 10 }}>
-                                + Add Time
-                            </Text>
-                        </View>
-
-                    </View>
-
-                    <View style={{ marginHorizontal: 10 }}>
-                        <View style={{ height: 9, width: 165, backgroundColor: !isEnabled ? '#07D779' : '#00000025', borderRadius: 5 }} />
-                        <Text style={{ fontSize: 14, fontWeight: '500', color: '#00000055', marginLeft: 12, marginTop: 4 }} >
-                            Wednesday
-                        </Text>
-                        <View>
-                            <FlatList data={(index == 1) ? hoursWeek1[3] : ((index == 2) ? hoursWeek2[3] : ((index == 3) ? hoursWeek3[3] : hoursWeek4[3]))}
-                                keyExtractor={(_, index) => index}
-                                renderItem={({ item }) => <View>
-                                    <Text style={{ fontSize: 14, fontWeight: '500', color: '#00000055', marginLeft: 12, marginTop: 4 }}>
-                                        {item.time} for {item.minutes} min {item.secondes} s
-                                    </Text>
-                                </View>} />
-                            <Text onPress={() => { setModalVisible(true); addTimeHandler(3) }} style={{ fontWeight: '700', fontSize: 12, color: !isEnabled ? '#07D779' : '#00000025', marginLeft: 10, marginTop: 4, marginBottom: 10 }}>
-                                + Add Time
-                            </Text>
-                        </View>
-
-                    </View>
-
-                    <View style={{ marginHorizontal: 10 }}>
-                        <View style={{ height: 9, width: 165, backgroundColor: !isEnabled ? '#07D779' : '#00000025', borderRadius: 5 }} />
-                        <Text style={{ fontSize: 14, fontWeight: '500', color: '#00000055', marginLeft: 12, marginTop: 4 }} >
-                            Thursday
-                        </Text>
-                        <View>
-                            <FlatList data={(index == 1) ? hoursWeek1[4] : ((index == 2) ? hoursWeek2[4] : ((index == 3) ? hoursWeek3[4] : hoursWeek4[4]))}
-                                keyExtractor={(_, index) => index}
-                                renderItem={({ item }) => <View>
-                                    <Text style={{ fontSize: 14, fontWeight: '500', color: '#00000055', marginLeft: 12, marginTop: 4 }}>
-                                        {item.time} for {item.minutes} min {item.secondes} s
-                                    </Text>
-                                </View>} />
-                            <Text onPress={() => { setModalVisible(true); addTimeHandler(4) }} style={{ fontWeight: '700', fontSize: 12, color: !isEnabled ? '#07D779' : '#00000025', marginLeft: 10, marginTop: 4, marginBottom: 10 }}>
-                                + Add Time
-                            </Text>
-                        </View>
-
-                    </View>
-
-                    <View style={{ marginHorizontal: 10 }}>
-                        <View style={{ height: 9, width: 165, backgroundColor: !isEnabled ? '#07D779' : '#00000025', borderRadius: 5 }} />
-                        <Text style={{ fontSize: 14, fontWeight: '500', color: '#00000055', marginLeft: 12, marginTop: 4 }} >
-                            Friday
-                        </Text>
-                        <View>
-                            <FlatList data={(index == 1) ? hoursWeek1[5] : ((index == 2) ? hoursWeek2[5] : ((index == 3) ? hoursWeek3[5] : hoursWeek4[5]))}
-                                keyExtractor={(_, index) => index}
-                                renderItem={({ item }) => <View>
-                                    <Text style={{ fontSize: 14, fontWeight: '500', color: '#00000055', marginLeft: 12, marginTop: 4 }}>
-                                        {item.time} for {item.minutes} min {item.secondes} s
-                                    </Text>
-                                </View>} />
-                            <Text onPress={() => { setModalVisible(true); addTimeHandler(5) }} style={{ fontWeight: '700', fontSize: 12, color: !isEnabled ? '#07D779' : '#00000025', marginLeft: 10, marginTop: 4, marginBottom: 10 }}>
-                                + Add Time
-                            </Text>
-                        </View>
-
-                    </View>
-
-                    <View style={{ marginHorizontal: 10 }}>
-                        <View style={{ height: 9, width: 165, backgroundColor: !isEnabled ? '#07D779' : '#00000025', borderRadius: 5 }} />
-                        <Text style={{ fontSize: 14, fontWeight: '500', color: '#00000055', marginLeft: 12, marginTop: 4 }} >
-                            Saturday
-                        </Text>
-                        <View>
-                            <FlatList data={(index == 1) ? hoursWeek1[6] : ((index == 2) ? hoursWeek2[6] : ((index == 3) ? hoursWeek3[6] : hoursWeek4[6]))}
-                                keyExtractor={(_, index) => index}
-                                renderItem={({ item }) => <View>
-                                    <Text style={{ fontSize: 14, fontWeight: '500', color: '#00000055', marginLeft: 12, marginTop: 4 }}>
-                                        {item.time} for {item.minutes} min {item.secondes} s
-                                    </Text>
-                                </View>} />
-                            <Text onPress={() => { setModalVisible(true); addTimeHandler(6) }} style={{ fontWeight: '700', fontSize: 12, color: !isEnabled ? '#07D779' : '#00000025', marginLeft: 10, marginTop: 4, marginBottom: 10 }}>
-                                + Add Time
-                            </Text>
-                        </View>
-                    </View>
-
-
-                </ScrollView>
-                <Modal visible={modalVisible} transparent={true}>
-                    <View style={{ justifyContent: 'center', alignItems: 'center', flex: 1, backgroundColor: '#00000070' }}>
-                        <View style={{ height: 237, width: 312, backgroundColor: '#FFFFFF', borderRadius: 15, alignItems: 'center' }}>
-                            <Text style={{ fontSize: 24, fontWeight: '700', color: '#00000075', marginTop: 21 }}>
-                                Add Time
-                            </Text>
-                            <View style={{ flexDirection: 'row', marginTop: 10 }}>
-                                <Text style={{ fontSize: 20, fontWeight: '500', color: '#00000075', marginLeft: 10 }}>
-                                    at :
-                                </Text>
-                                <TextInput onChangeText={(text) => { setTimeVar1(text) }} keyboardType='number-pad' style={{ height: 29, width: 42, borderRadius: 4, borderWidth: 1, borderColor: '#E5E7F0', marginLeft: 10, paddingHorizontal: 10 }} />
-                                <Text style={{ fontSize: 20, fontWeight: '500', color: '#00000075', marginLeft: 10 }}>
-                                    :
-                                </Text>
-                                <TextInput onChangeText={(text) => { setTimeVar2(text) }} keyboardType='number-pad' style={{ height: 29, width: 42, borderRadius: 4, borderWidth: 1, borderColor: '#E5E7F0', marginLeft: 10, paddingHorizontal: 10 }} />
-                            </View>
-
-
-                            <View style={{ flexDirection: 'row', marginTop: 20 }}>
-                                <Text style={{ fontSize: 20, fontWeight: '500', color: '#00000075', marginLeft: 10 }}>
-                                    for :
-                                </Text>
-                                <TextInput onChangeText={(text) => { setMinTimeVar(text) }} keyboardType='number-pad' style={{ height: 29, width: 42, borderRadius: 4, borderWidth: 1, borderColor: '#E5E7F0', marginLeft: 10, paddingHorizontal: 10 }} />
-                                <Text style={{ fontSize: 20, fontWeight: '500', color: '#00000075', marginLeft: 10 }}>
-                                    min
-                                </Text>
-                                <TextInput onChangeText={(text) => { setSecTimeVar(text) }} keyboardType='number-pad' style={{ height: 29, width: 42, borderRadius: 4, borderWidth: 1, borderColor: '#E5E7F0', marginLeft: 10, paddingHorizontal: 10 }} />
-                                <Text style={{ fontSize: 20, fontWeight: '500', color: '#00000075', marginLeft: 10 }}>
-                                    s
-                                </Text>
-                            </View>
-
-                            <View style={{ flexDirection: 'row', marginTop: 20 }}>
-                                <Pressable onPress={() => setModalVisible(!modalVisible)} style={{ borderRadius: 13, backgroundColor: '#00000070', alignItems: 'center', justifyContent: 'center', flexDirection: 'row', height: 42, width: 119, margin: 7 }}>
-                                    <Image source={require('../../assets/images/x-circle.png')} />
-                                    <Text style={{ fontSize: 14, fontWeight: '700', color: '#FFFFFF', marginLeft: 5 }}>
-                                        Anuler
-                                    </Text>
-                                </Pressable>
-                                <Pressable onPress={addhandler} style={{ borderRadius: 13, backgroundColor: '#07D779', alignItems: 'center', justifyContent: 'center', flexDirection: 'row', height: 42, width: 119, margin: 7 }}>
-                                    <Image source={require('../../assets/images/check.png')} />
-                                    <Text style={{ fontSize: 14, fontWeight: '700', color: '#FFFFFF', marginLeft: 5 }}>
-                                        Confirmer
-                                    </Text>
-                                </Pressable>
-                            </View>
-                        </View>
-                    </View>
-                </Modal>
-
-
-
-
-
-
-
-
-            </View>
-        </ScrollView>
-
+        </View>
     );
 
 

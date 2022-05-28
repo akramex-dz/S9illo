@@ -114,15 +114,12 @@ export default function SpecificPlantSceen({ route }) {
                 <View style={{ backgroundColor: '#07D779', width: '100%' }}>
 
 
-                    <View style={{ flexDirection: 'row' }}>
-                        <Pressable onPress={navigate.goBack} >
-                            <Image source={require('../../assets/images/backArrow.png')} style={{ marginLeft: 21.5, marginTop: 29.5, width: 40 }} resizeMode={'contain'} />
+                    <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginTop: '10%', height: '10%' }}>
+                        <Pressable onPress={navigate.goBack} style={{ right: "300%", height: '80%', width: '10%', justifyContent: 'center', alignItems: 'center' }}  >
+                            <Image source={require('../../assets/images/backArrow.png')} style={{ height: "50%" }} resizeMode="contain" />
 
                         </Pressable>
-                        <Text style={{ fontSize: 20, fontWeight: '700', color: 'white', marginLeft: 165, marginTop: 27, position: 'absolute' }}>
-                            Details
-                        </Text>
-                    </View>
+                        <Text style={{ fontFamily: 'CircularStd-Bold', fontSize: 23, color: 'white', right: '50%' }}>Details</Text></View>
                     <View style={{ flexDirection: 'row' }}>
                         <View>
                             <Text style={{ fontSize: 28, fontWeight: '700', color: 'white', marginTop: 60, marginLeft: 20 }}>
@@ -389,7 +386,7 @@ export default function SpecificPlantSceen({ route }) {
 
                 </View>
 
-                <View style={{ alignItems: 'center', justifyContent: 'center', backgroundColor: '#FFFFFF', paddingTop: 20, paddingBottom: 20 }}>
+                <View style={{ alignItems: 'center', justifyContent: 'center', backgroundColor: '#FFFFFF', paddingTop: 20, paddingBottom: 20, marginBottom: '18%' }}>
                     <TouchableOpacity style={{ width: 250, height: 35, backgroundColor: '#07D779', borderRadius: 10, alignItems: 'center', justifyContent: 'center' }} onPress={() => { navigate.navigate('GraphicCardScreen', { plant }) }}>
                         <Text style={{ fontSize: 16, fontWeight: '700', color: 'white' }}>
                             Visualisation des données

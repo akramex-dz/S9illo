@@ -6,6 +6,8 @@ import { ref, onValue, set, get } from "firebase/database"
 import { db } from '../../core/firebase';
 import ProchainsArrosages from "../components/ProchainsArrosages"
 import DerniersArrosages from "../components/DerniersArrosages"
+import Header from "../components/Header"
+
 
 export default function Screen1({ navigation, infos, plantSeches }) {
   const [adr, setAdr] = useState(null);
@@ -30,30 +32,34 @@ export default function Screen1({ navigation, infos, plantSeches }) {
   });
 
   return (
-    <ScrollView style={styles.dashBoard}>
+    <View style={styles.dashBoard}>
+      <Header />
+      <ScrollView >
 
 
-      <Text style={styles.salutZack}>Salut {infos.displayName || "..."}</Text>
+        <Text style={styles.salutZack}>Salut {infos.displayName || "..."}</Text>
 
-      <Text style={styles.salutMsg}>N'oubliez pas de passer du temps avec vos plantes...</Text>
+        <Text style={styles.salutMsg}>N'oubliez pas de passer du temps avec vos plantes...</Text>
 
-      <View style={styles.Weatherbar}>
-        <Weatherbar input={adr} />
-      </View>
+        <View style={styles.Weatherbar}>
+          <Weatherbar input={adr} />
+        </View>
 
-      <View style={{ flexDirection: "row", marginLeft: 22 }}>
-        <Donutchart p={waterLevel} c={"#3155A1"} />
-        <Donutchart p={plantSeches} c={"#07D779"} />
-      </View>
+        <View style={{ flexDirection: "row", marginLeft: 22 }}>
+          <Donutchart p={waterLevel} c={"#3155A1"} />
+          <Donutchart p={plantSeches} c={"#07D779"} />
+        </View>
 
-      <View style={styles.cardArrosage}>
-        <ProchainsArrosages />
-      </View>
-      <View style={styles.cardArrosage}>
-        <DerniersArrosages />
-      </View>
+        <View style={styles.cardArrosage}>
+          <ProchainsArrosages />
+        </View>
+        <View style={styles.cardArrosage}>
+          <DerniersArrosages />
+        </View>
 
-    </ScrollView>
+      </ScrollView>
+    </View>
+
 
   );
 }

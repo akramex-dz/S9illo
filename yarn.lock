@@ -1955,6 +1955,10 @@
   dependencies:
     merge-options "^3.0.4"
 
+"@react-native-clipboard/clipboard@react-native-community/clipboard":
+  version "1.10.0"
+  resolved "https://codeload.github.com/react-native-community/clipboard/tar.gz/2f336aaf9c09f83e698d3143abc9db3cc4e10f83"
+
 "@react-native-community/cli-debugger-ui@^7.0.3":
   version "7.0.3"
   resolved "https://registry.npmjs.org/@react-native-community/cli-debugger-ui/-/cli-debugger-ui-7.0.3.tgz"
@@ -6261,6 +6265,11 @@ react-native-checkbox@^2.0.0:
   integrity sha512-XTI7iZ0KuPYyNCvcg4p4eC5ZenuBkfraFUzec17Vao6DsIcn5AOUKkc6KSwLPVksJyWWlPc832M/HTvni5qk7A==
   dependencies:
     prop-types "^15.5.10"
+
+react-native-clipboard@^0.0.5:
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/react-native-clipboard/-/react-native-clipboard-0.0.5.tgz#3e3f57f32f6785fff05453f88fbcc0a34ed47828"
+  integrity sha1-Pj9X8y9nhf/wVFP4j7zAo07UeCg=
 
 react-native-codegen@^0.0.17:
   version "0.0.17"
