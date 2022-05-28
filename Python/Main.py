@@ -24,6 +24,11 @@ def IsConnected(host='http://google.com'):
         return False
 
 
+async def programmable(time_diff, duration, arduino, plant):  # programmable mode function
+    time.sleep(time_diff)
+    arduino.actioner_vanne(plant.pin_vanne, duration)
+
+
 configuration = {
     "apiKey": "AIzaSyBGJhJzJlJDfnU5h-uq56NDka6ZmJkU6Os",
     "authDomain": "s9illolatestedition.firebaseapp.com",
@@ -180,6 +185,9 @@ async def boucle():
                     #global task
                     task = asyncio.create_task(
                         arduino.actioner_vanne(plant.pin_vanne, 2))
+
+                # mode programmé
+
                 elif(plant.intelligent == False):
 
                     prog = getProg(
@@ -194,19 +202,28 @@ async def boucle():
                     hour_p = date[8:10]
                     minute_p = date[10:12]
                     prochain = datetime.datetime(
-                        year_p, month_p, day_p, hour_p, hour_p, 0)
+                        year_p, month_p, day_p, hour_p, minute_p, 0)
+
+                    current_date = now.strftime("%d/%m/%Y")
+                    current_time = now.strftime("%H:%M")
+
+                    temps = now.strftime("%Y%m%d%H%M")
 
                     year = temps[:4]
                     month = temps[4:6]
                     day = temps[6:8]
                     hour = temps[8:10]
                     minute = temps[10:12]
-                    now = datetime.datetime(
-                        year_p, month_p, day_p, hour_p, hour_p, 0)
+                    now = datetime.datetime(year, month, day, hour, minute, 0)
 
-                    # traitement de date
+                    diff = prochain - now
 
-                    #print(f"arosage de plant {plant.id_plante}")
+                    time_diff = diff.total_seconds()
+
+                    if (time_diff > 0):
+                        task1 = asyncio.create_task(
+                            programmable(time_diff, duration, arduino, plant))
+
                 time.sleep(0.5)
 
         if (IsConnected() == True):
@@ -330,7 +347,8 @@ async def boucle():
                     db.child("raspberries").child("1234").child("tabArduino").child(str(plant.linked_arduino.id_arduino)).child("plants").child(str(plant.id_plante)
                                                                                                                                                 ).child("valeursActuelles").set(data)
 
-        await task
+        await task  # mode manual
+        await task1  # mode programmable
         time.sleep(10)
     # await task
 
