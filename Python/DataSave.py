@@ -1,5 +1,7 @@
-from asyncio.windows_events import NULL
+#from asyncio.windows_events import NULL
 import sqlite3
+
+#Connection Ã  la DataBase Obligatoire
 
  
 def addArduino ( arduinoid ) :
@@ -20,7 +22,7 @@ def delArduino ( arduinoid ) :
     
 def addPlant ( arduinoid, plantid ) :
     cr.execute(f"insert into PLANTSof{arduinoid} values ({plantid},0)")
-    cr.execute(f"create table if not exists DATAof{arduinoid}{plantid}(data_id integer, moisture float, humidity float, temperature float)")
+    cr.execute(f"create table if not exists DATAof{arduinoid}{plantid}(data_id integer, moisture float, humidity float, temperature float, time text)")
     db.commit()
     
 def delPlant ( arduinoid, plantid ) :
@@ -33,10 +35,19 @@ def delPlant ( arduinoid, plantid ) :
 def addData ( arduinoid, plantid, data) :
     cr.execute(f"select data_nb from PLANTSof{arduinoid} where plant_id = {plantid}")
     newid = cr.fetchone()
-    m = data["moisture"]
-    h = data["humidity"]
+    m = data["soilMoisture"]
+    h = data["airHumidity"]
     t = data["temperature"]
-    cr.execute(f"insert into DATAof{arduinoid}{plantid} values ({newid[0]+1},{m},{h},{t})")
+    tt = data["time"]
+
+
+    #############################
+    print("inside addDAta")
+    print(f"temp = {t}  humd = {h} SM = {m} time = {tt}")#####################################################################
+    #############################
+
+
+    cr.execute(f"insert into DATAof{arduinoid}{plantid} values ({newid[0]+1},{m},{h},{t},'{tt}')")
     cr.execute(f"update PLANTSof{arduinoid} set data_nb = {newid[0]+1} where plant_id  = {plantid}")
     db.commit()
 
@@ -48,18 +59,16 @@ def getFirstDataIn ( arduinoid, plantid ):
         dataorder = temp[0]
         data={
       "temperature": temp[1],
-      "humidity": temp[2],
-      "moisture" : temp[3] 
+      "airHumidity": temp[2],
+      "soilMoisture" : temp[3] ,
+      "time" : temp [4]
     }
         cr.execute(f"delete from DATAof{arduinoid}{plantid} where data_id = {dataorder} ")
         db.commit()
         return data
     except TypeError :
-        return NULL
+        return 0 #NULL
 
 
 
-#Connection à la DataBase Obligatoire
-db = sqlite3.connect("s9illo.db")
-cr = db.cursor()
-cr.execute("create table if not exists arduino(arduino_id integer)")
+

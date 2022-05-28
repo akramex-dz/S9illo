@@ -1,5 +1,6 @@
 # Class Arduino
 
+from logging import StreamHandler
 from pickle import STOP
 from turtle import st
 from Plant import Plant
@@ -13,16 +14,52 @@ from time import sleep
 class Arduino:
 
     
-    def __init__(self, id, address, waterLevelSensor, pinWaterLevel = 0, powerPinWaterLevel = 0):
+    def __init__(self,db, id, address, waterLevelSensor, pinWaterLevel = 0, powerPinWaterLevel = 0):
 
         self.id_arduino = id
+        self.db = db
         self.list_plante = []
         self.address = address
         self.waterLevelSensor = waterLevelSensor
         if(waterLevelSensor == True):
             self.pinWL = pinWaterLevel
             self.powerPinWL = powerPinWaterLevel
+        stream_handler_add_plant.counter = 0
+        self.stream_add_plant = self.db.child("raspberries").child("1234").child("tabArduino").child(str(self.id_arduino)).child("plants").stream(stream_handler_add_plant)
+    
+    def stream_handler_add_plant(self, message):
+        stream_handler_add_plant.counter += 1
+        
+        if(str(message["path"]) == "/"  and stream_handler_add_plant.counter > 1 ) :
+            plant_ids = self.db.child("raspberries").child("1234").child("tabArduino").child(str(self.id_arduino)).child("plants").shallow().get()
+            # get the last id added 
+            list_indice_plants = []        
 
+            for plant_id in plant_ids.val() :
+                    list_indice_plants.append(plant_id)
+            
+            list_indice_plants.sort()
+
+            new_plant_id = list_indice_plants[-1]
+
+            new_plant_id = int(new_plant_id) +1
+
+            plant = self.db.child("raspberries").child("1234").child("tabArduino").child(str(self.id_arduino)).child("plants").child(str(new_plant_id)).get()
+            plant = plant.val()
+
+            arduino =  self.db.child("raspberries").child("1234").child("tabArduino").child(str(self.id_arduino)).get()
+            arduino = arduino.val()
+
+            intelligent = self.db.child("raspberries").child("1234").child("tabArduino").child(str(self.id_arduino)).child("plants").child(str(new_plant_id)
+            ).child("commands").child("smart").get()
+            intelligent = intelligent.val()
+
+            p = Plant(new_plant_id, plant["pinVanne"], plant["tMax"], plant["smMin"], plant["powerPinSM"], 
+                            plant["dataPinSM"], arduino["dataPinDht"], arduino["powerPinDht"], intelligent, self.db, self, 1234)
+
+            #addPlant(self.id_arduino, new_plant_id)
+
+            self.list_plante.append(p)
     
     def recuperer_valeur_sol(self, pin, power_pin, plant):
         

@@ -30,20 +30,7 @@ class Plant:
 
 
 
-    """ def __init__(self, db, test, id1, pinVanne, id_rasp , id_ard, pin_vanne):
-        self.id_plante = id1
-        self.db = db #firebase
-        self.intelligent = test
-        self.pin_vanne = pin_vanne                      # vanne pin
-        self.linked_arduino = 1
-        self.pin_vanne = pinVanne
-        self.id_arduino = id_ard
-        self.id_raspberry = id_rasp 
-        self.stream_intelligent_mode = db.child("raspberries").child("1234").child("tabArduino").child("0").child(
-            "plants").child(str(id1)).child("commands").child("smart").stream(self.stream_handler_intelligent_mode)
-        
-        self.stream_manual_mode =  db.child("raspberries").child(str(self.id_raspberry)).child("tabArduino").child(str(self.id_arduino)).child("plants").child(str(self.id_plante)).child("commands"
-        ).child("manual").stream(self.stream_handler_manual_mode) """
+    
 
 
 

@@ -1,6 +1,6 @@
 #Connecter DataBase 
 from ast import Return
-from asyncio.windows_events import NULL
+#from asyncio.windows_events import NULL
 import sqlite3
 
 db2 = sqlite3.connect("schedule.db")
@@ -23,7 +23,7 @@ def getProg () :
         }
         return instruction
     except TypeError as Er :
-        return NULL
+        return 0 #NULL
 
 #deletes first prog in
 def delProg() :
