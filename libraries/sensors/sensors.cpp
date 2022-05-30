@@ -36,7 +36,7 @@ int readWaterLevel(int sensorPin, int PowerPin) { // PowerPin is the VCC Pin
   int val = analogRead(sensorPin);    // Read the analog value form sensor
   digitalWrite(PowerPin, LOW);   // Turn the sensor OFF
 
-  return val;             // send current reading
+  return (val/520)*100;             // send current reading
 }
 
 float DHT_22_temp(int pinNumber, int PowerPin)
