@@ -1,4 +1,3 @@
-#from asyncio.windows_events import NULL
 import sqlite3
 
 # Connection Ã  la DataBase Obligatoire
@@ -8,12 +7,9 @@ cr.execute("create table if not exists arduino(arduino_id integer)")
 
 
 def addArduino(arduinoid):
-    #conn = sqlite3.connect("s9illo.db")
     cr.execute(f"insert into arduino(arduino_id) values ({arduinoid})")
-    cr.execute(
-        f"create table if not exists PLANTSof{arduinoid} (plant_id integer, data_nb integer)")
+    cr.execute(f"create table if not exists PLANTSof{arduinoid} (plant_id integer, data_nb integer)")
     conn.commit()
-    # db.commit()
 
 
 def delArduino(arduinoid):
@@ -22,23 +18,22 @@ def delArduino(arduinoid):
     plantids = cr.fetchall()
     for plantid in plantids:
         cr.execute(f"DROP TABLE DATAof{arduinoid}{plantid[0]}")
+        cr.execute(f"DROP TABLE WATERPROGof{arduinoid}{plantid}")
     cr.execute(f"drop table PLANTSof{arduinoid} ")
-    # db.commit()
     conn.commit()
 
 
 def addPlant(arduinoid, plantid):
     cr.execute(f"insert into PLANTSof{arduinoid} values ({plantid},0)")
-    cr.execute(
-        f"create table if not exists DATAof{arduinoid}{plantid}(data_id integer, moisture float, humidity float, temperature float, time text)")
-    # db.commit()
+    cr.execute(f"create table if not exists DATAof{arduinoid}{plantid}(data_id integer, moisture float, humidity float, temperature float, time text)")
+    cr.execute(f"create table if not exists WATERPROGof{arduinoid}{plantid}(id integer,duration integer)")
     conn.commit()
 
 
 def delPlant(arduinoid, plantid):
     cr.execute(f"delete from PLANTSof{arduinoid} where plant_id = {plantid} ")
     cr.execute(f"DROP TABLE DATAof{arduinoid}{plantid}")
-    # db.commit()
+    cr.execute(f"DROP TABLE WATERPROGof{arduinoid}{plantid}")
     conn.commit()
 
 
@@ -80,8 +75,35 @@ def getFirstDataIn(arduinoid, plantid):
         }
         cr.execute(
             f"delete from DATAof{arduinoid}{plantid} where data_id = {dataorder} ")
-        # db.commit()
         conn.commit()
         return data
     except TypeError:
         return 0  # NULL
+
+def addProg (arduinoid, plantid, id, duration ) :
+    cr.execute(f"insert into WATERPROGof{arduinoid}{plantid}(id, duration) values ({id}, {duration})")
+    conn.commit()
+    
+#gets first prog in dict{ "id" , "duration"} with deleting it
+def getProg (arduinoid, plantid) :
+    try :
+        cr.execute(f"select * from WATERPROGof{arduinoid}{plantid} order by id limit 1")
+        temp = cr.fetchone()
+        instruction = {
+            "id": temp[0],
+            "duration":temp[1]
+        }
+        #cr.execute(f"delete from WATERPROGof{arduinoid}{plantid} where id = {instruction['id']} ")
+        conn.commit()
+        return instruction
+    except TypeError as Er :
+        return 0
+
+def delProg(arduinoid, plantid) :
+    try : 
+        cr.execute(f"select id from WATERPROGof{arduinoid}{plantid} order by id limit 1")
+        id = cr.fetchone()
+        cr.execute(f"delete from WATERPROGof{arduinoid}{plantid} where id = {id[0]} ")
+        conn.commit()
+    except :
+        return 0
