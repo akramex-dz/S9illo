@@ -20,6 +20,8 @@ import SelectPlant from './src/app/screens/SelectPlant';
 import WateringHistory from './src/app/screens/WateringHistory';
 import DrawerScreen from './src/app/screens/DrawerScreen'
 import ContactSupport from './src/app/screens/ContactSupport';
+import Erreur from './src/app/screens/Erreur';
+import AddController from './src/app/screens/AddController';
 import Help from './src/app/screens/Help';
 import { auth } from './src/core/firebase';
 import { signOut } from 'firebase/auth';
@@ -90,7 +92,8 @@ export default function App() {
         <Stack.Screen name='ManualWatering' component={ManualWatering} options={{ header: () => null }} />
         <Stack.Screen name='WateringHistory' component={WateringHistory} options={{ header: () => null }} />
         <Stack.Screen name='ContactSupport' component={ContactSupport} options={{ header: () => null }} />
-
+        <Stack.Screen name='Erreur' component={Erreur} options={{ header: () => null }} />
+        <Stack.Screen name='AddController' component={AddController} options={{ header: () => null }} />
       </Stack.Navigator>
     </NavigationContainer>
     /* <NavigationContainer>

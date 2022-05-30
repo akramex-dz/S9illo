@@ -15,13 +15,15 @@ import DashBoard from '../screens/DashBoard'
 import Screen2 from '../screens/Screen2'
 import MyPlants from '../screens/MyPlants'
 
-
+import { useNavigation } from '@react-navigation/native';
 const Tab = createBottomTabNavigator();
 
 export default function MainContainer() {
+    const navigate = useNavigation();
     const [user, setUser] = useState(null);
     const [plants, setPlants] = useState([]);
     const [infos, setInfos] = useState({});
+    const [idRaspberry, setIdRaspberry] = useState("");
     const [plantSeches, setPlantSeches] = useState(0);
     const getPlants = async (idRaspberry) => {
         const plants = [];
@@ -34,19 +36,20 @@ export default function MainContainer() {
 
 
                 snapshot.val().forEach((childSnapshot) => {
-                    childSnapshot["plants"].forEach((childChildSnapshot) => {
-                        plants.push({ ...childChildSnapshot });
-                        console.log(childChildSnapshot);
-                        if (((childChildSnapshot.valeursActuelles).soilMoisture) > 20 && ((childChildSnapshot.valeursActuelles).soilMoisture) < 60) {
-                            cpt++;
-                            console.log(cpt);
-                            console.log(cpt);
-                        }
-                    })
+                    if (childSnapshot["plants"] != "") {
+                        childSnapshot["plants"].forEach((childChildSnapshot) => {
+                            plants.push({ ...childChildSnapshot });
+
+                            if (((childChildSnapshot.valeursActuelles).soilMoisture) > 20 && ((childChildSnapshot.valeursActuelles).soilMoisture) < 60) {
+                                cpt++;
+
+                            }
+
+                        })
+                    }
+
                 });
-                // snapshot.val()["data"].forEach((childSnapshot, index) => {
-                //     plants.push({ id: index, ...childSnapshot });
-                // });
+
                 setPlants(plants);
                 setPlantSeches(cpt * 100 / plants.length);
             }
@@ -63,10 +66,8 @@ export default function MainContainer() {
         get(ref(db, "users/", currentUser.uid)).then((snapshot) => {
             if (snapshot.exists()) {
                 setInfos(snapshot.val()[currentUser.uid]);
-                getPlants(snapshot.val()[currentUser.uid].idRaspberry);
-
-
-
+                //getPlants(snapshot.val()[currentUser.uid].idRaspberry);
+                setIdRaspberry(snapshot.val()[currentUser.uid].idRaspberry);
             }
             else {
                 console.log("no data");
@@ -77,6 +78,14 @@ export default function MainContainer() {
 
     }
 
+    useEffect(() => {
+        if (infos.idRaspberry) {
+            const unsub = onValue(ref(db, "raspberries/" + infos.idRaspberry + "/tabArduino"), snapshot => {
+                getPlants(infos.idRaspberry);
+            })
+            return unsub;
+        }
+    }, [infos.idRaspberry])
 
 
 
@@ -105,10 +114,11 @@ export default function MainContainer() {
     useEffect(() => {
         onAuthStateChanged(auth, (currentUser) => {
             if (currentUser) {
+
                 setUser(currentUser);
                 getInfos(currentUser);
             } else {
-                navigation.replace("Login")
+                navigate.replace("Login")
             }
         })
     }, [])
@@ -122,7 +132,7 @@ export default function MainContainer() {
                 tabBarStyle: { height: 80, borderTopLeftRadius: 10, borderTopRightRadius: 10, backgroundColor: '#0c0c0c', opacity: 0.6 }
             }}>
 
-
+            { }
             <Tab.Screen name={'Screen1'} options={{
                 tabBarIcon: ({ focused }) => (
                     <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1 }}>
@@ -144,7 +154,7 @@ export default function MainContainer() {
                     </View>
                 )
             }}>
-                {props => <Screen2 {...props} plants={plants} />}
+                {props => <Screen2 {...props} plants={plants} idRaspberry={idRaspberry} />}
             </Tab.Screen>
             <Tab.Screen name={'My Plants'} options={{
                 tabBarIcon: ({ focused }) => (
@@ -155,7 +165,7 @@ export default function MainContainer() {
                     </View>
                 )
             }} >
-                {props => <MyPlants {...props} plants={plants} />}
+                {props => <MyPlants {...props} plants={plants} idRaspberry={idRaspberry} index={plants.length} />}
 
             </Tab.Screen>
 

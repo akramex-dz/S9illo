@@ -29,3 +29,8 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const db = getDatabase();
+
+import { getStorage, ref } from "firebase/storage";
+
+// Get a reference to the storage service, which is used to create references in your storage bucket
+export const storageRef = getStorage(app);

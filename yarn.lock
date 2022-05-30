@@ -2128,6 +2128,11 @@
     sudo-prompt "^9.0.0"
     wcwidth "^1.0.1"
 
+"@react-native-firebase/storage@^14.11.0":
+  version "14.11.0"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/storage/-/storage-14.11.0.tgz#65d652b9696650f3c704d4f4144bb12673483acc"
+  integrity sha512-B8emtJEfNzsxBVyCnJ5f26z4OPU5bQefHgc8mrjUjDvhWqWDstcLumevFKBlm8XFWpqQup3re+JRH/TcQPaB9w==
+
 "@react-native/assets@1.0.0":
   version "1.0.0"
   resolved "https://registry.npmjs.org/@react-native/assets/-/assets-1.0.0.tgz"

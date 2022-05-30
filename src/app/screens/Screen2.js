@@ -5,7 +5,8 @@ import React, { useState, useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
 import Header from "../components/Header"
 
-export default function Screen2({ navigation, plants }) {
+export default function Screen2({ navigation, plants, idRaspberry }) {
+
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
     const navigate = useNavigation();
@@ -45,7 +46,7 @@ export default function Screen2({ navigation, plants }) {
 
 
         <View style={{ flex: 1, alignItems: 'center', backgroundColor: '#fff' }}>
-            <Header />
+            <Header idRaspberry={idRaspberry} />
 
             <View style={styles.card}>
 

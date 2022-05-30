@@ -8,8 +8,12 @@ import { FlatList } from 'react-native';
 import ProchainsArr from '../../data/PronchainsArr'
 import DropDownPicker from "react-native-dropdown-picker";
 import { useNavigation } from "@react-navigation/native";
+import { signOut } from 'firebase/auth';
+import { auth } from '../../core/firebase';
 
-export default function DrawerScreen() {
+export default function DrawerScreen({ route }) {
+    const { idRaspberry } = route.params;
+
     const navigate = useNavigation();
     const [modalVisible, setModalVisible] = useState(false);
     const addhandler = () => {
@@ -26,22 +30,24 @@ export default function DrawerScreen() {
     const onFitemOpen = useCallback(() => {
         setOpen1(false);
     }, []);
+    console.log("count3:  " + idRaspberry);
+
     return (
         <View style={{ justifyContent: 'center', alignItems: 'center', flex: 1, backgroundColor: 'white' }}>
             <TouchableOpacity onPress={navigate.goBack} style={{ height: '4%', width: '18%', alignItems: 'center', alignSelf: 'flex-end', marginTop: '25%' }}   >
                 <Image source={require('../../assets/images/backArrowGreen.png')} style={{ height: "100%" }} resizeMode="contain" />
             </TouchableOpacity>
             <View style={{ alignItems: 'flex-start', justifyContent: 'center', marginTop: '30%' }} >
-                <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginLeft: '1%', marginVertical: "3%" }} onPress={() => { }}>
+                <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginLeft: '1%', marginVertical: "3%" }} onPress={() => { navigate.navigate("Erreur") }}>
                     <Image source={require('../../assets/images/profile.png')} style={{ height: "100%", }} resizeMode="contain" />
                     <Text style={{ color: '#53535380', fontFamily: 'CircularStd-Medium', fontSize: 18 }}>Edit Profile</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginLeft: '2%', marginVertical: "3%" }} onPress={() => { }}>
+                <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginLeft: '2%', marginVertical: "3%" }} onPress={() => { navigate.navigate("Erreur") }}>
                     <Image source={require('../../assets/images/user.png')} style={{ height: "100%", }} resizeMode="contain" />
                     <Text style={{ color: '#53535380', fontFamily: 'CircularStd-Medium', fontSize: 18 }}>Manage Users</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginVertical: "3%" }} onPress={() => { }}>
+                <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginVertical: "3%" }} onPress={() => { navigate.navigate("AddController", { idRaspberry }) }}>
                     <Image source={require('../../assets/images/controller.png')} style={{ height: "100%", }} resizeMode="contain" />
                     <Text style={{ color: '#53535380', fontFamily: 'CircularStd-Medium', fontSize: 18 }}>Controllers</Text>
                 </TouchableOpacity>
@@ -53,7 +59,7 @@ export default function DrawerScreen() {
                     <Image source={require('../../assets/images/contact.png')} style={{ height: "100%", }} resizeMode="contain" />
                     <Text style={{ color: '#53535380', fontFamily: 'CircularStd-Medium', fontSize: 18 }}>Contact support</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginVertical: "3%" }} onPress={() => { }}>
+                <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginVertical: "3%" }} onPress={() => { signOut(auth).then(() => navigate.replace("Login")) }}>
                     <Image source={require('../../assets/images/logout.png')} style={{ height: "100%", }} resizeMode="contain" />
                     <Text style={{ color: '#53535380', fontFamily: 'CircularStd-Medium', fontSize: 18 }}>Log-Out</Text>
                 </TouchableOpacity>

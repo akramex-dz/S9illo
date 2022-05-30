@@ -22,8 +22,13 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import COLORS from "../../data/colors";
 import { set } from "firebase/database";
+import { BackHandler } from "react-native";
 
 const LoginScreen = ({ navigation }) => {
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener("hardwareBackPress", () => { return (true) });
+    return () => { backHandler.remove() };
+  }, [])
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [hidden, setHidden] = useState(false);

@@ -15,6 +15,10 @@ export default function PlantCard({
 }) {
   console.log("moisture");
   console.log(moisture);
+  console.log("commands");
+  console.log(plant.commands);
+  console.log("commands");
+
   const navigate = useNavigation();
   const [check, setCheck] = useState(false);
   const checkHandler = () => {

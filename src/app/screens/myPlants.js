@@ -14,7 +14,8 @@ import FloatingActionButton from "../components/FloatingActionButton";
 import CheckBox from "../components/CheckBox";
 import Header from "../components/Header"
 
-export default function MyPlants({ plants, navigation, idRaspBerry, index }) {
+export default function MyPlants({ plants, navigation, idRaspberry, index }) {
+  console.log("plants: " + plants)
   const [displayDelete, setDisplayDelete] = useState(false);
   const [value, setValue] = useState("");
   const [plantToDelete, setPlantToDelete] = useState([]);
@@ -32,7 +33,7 @@ export default function MyPlants({ plants, navigation, idRaspBerry, index }) {
         height: "100%",
       }}
     >
-      <Header />
+      <Header idRaspberry={idRaspberry} />
 
       <View
         style={{
@@ -80,7 +81,7 @@ export default function MyPlants({ plants, navigation, idRaspBerry, index }) {
         </View>
         <View style={{ marginTop: 10, flex: 1, width: "100%" }}>
           <FlatList
-            keyExtractor={(item) => item.id}
+            keyExtractor={(_, index) => index}
             showsVerticalScrollIndicator={false}
             numColumns={2}
             data={plants}
@@ -96,12 +97,17 @@ export default function MyPlants({ plants, navigation, idRaspBerry, index }) {
           />
         </View>
       </View>
+      {console.log("id: ")}
+      {console.log(idRaspberry)}
       <FloatingActionButton
-        idRaspBerry={idRaspBerry}
-        index={index}
+        idRaspberry={idRaspberry}
+        index={plants.length}
         setDisplayDelete={setDisplayDelete}
         navigation={navigation}
       ></FloatingActionButton>
     </View>
   );
 }
+
+
+

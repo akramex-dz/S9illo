@@ -33,7 +33,8 @@ export default function Screen1({ navigation, infos, plantSeches }) {
 
   return (
     <View style={styles.dashBoard}>
-      <Header />
+      <Header idRaspberry={infos.idRaspberry} />
+
       <ScrollView >
 
 
