@@ -23,8 +23,8 @@ export default function WateringSettings({ navigation, route }) {
 
     const [timevar1, setTimeVar1] = useState("")
     const [timevar2, setTimeVar2] = useState("")
-    const [mintimevar, setMinTimeVar] = useState("")
-    const [sectimevar, setSecTimeVar] = useState("")
+    const [mintimevar, setMinTimeVar] = useState(0)
+    const [sectimevar, setSecTimeVar] = useState(0)
     const weeks = [1, 2, 3, 4]
     const [hoursWeek1, setHoursWeek1] = useState([[], [], [], [], [], [], []])
     const [hoursWeek2, setHoursWeek2] = useState([[], [], [], [], [], [], []])
@@ -79,8 +79,7 @@ export default function WateringSettings({ navigation, route }) {
         set(ref(db, 'raspberries/' + plant.idRaspberry + "/tabArduino/" + plant.idArduino + "/plants/" + plant.idPlant + "/commands/programm/" + (index - 1) + "/" + daysIndex + "/" + ((newData[daysIndex] === undefined) ? `0` : `${newData[daysIndex].length}`)), {
             trait: false,
             time: timevar1 + " : " + timevar2,
-            minutes: mintimevar,
-            secondes: sectimevar,
+            secondes: sectimevar + mintimevar * 60,
 
         });
         setModalVisible(false)
