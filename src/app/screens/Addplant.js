@@ -73,7 +73,7 @@ export default function AddPlant({ navigation, route }) {
   const { index, idRaspberry } = route.params;
   const [dwnUrl, setDwnUrl] = useState("");
   const [nbArduino, setNbArduino] = useState(0);
-  const [lengthTest, SetLenghthTest] = useState(0);
+  const [lengthTest, setLenghthTest] = useState(0);
   useEffect(() => {
     get(ref(db, "raspberries/" + idRaspberry + "/nbArduino")).then(
       (snapshot) => {
@@ -144,6 +144,22 @@ export default function AddPlant({ navigation, route }) {
     setOpen(false);
   }, []);
 
+
+  useEffect(() => {
+    get(ref(db, "raspberries/" + idRaspberry + "/tabArduino/" + (value2 - 1).toString() + "/plants")).then(
+      (snapshot) => {
+
+
+
+        setLenghthTest(snapshot.val().length);
+        console.log("LENGTH1:")
+        console.log(lengthTest)
+        console.log(snapshot.val().length)
+        console.log("LENGTH1:")
+      }
+    )
+  }, [value2])
+
   const AddPlant = async () => {
     try {
       const blob = await new Promise((resolve, reject) => {
@@ -164,11 +180,7 @@ export default function AddPlant({ navigation, route }) {
       const result = await uploadBytes(fileRef, blob);
       blob.close();
       const dwnUrl = await getDownloadURL(fileRef)
-      get(ref(db, "raspberries/" + idRaspberry + "/tabArduino/" + (value2 - 1).toString() + "/plants/")).then(
-        (snapshot) => {
-          SetLenghthTest(snapshot.val().length());
-        }
-      )
+      console.log((value2 - 1).toString());
       await set(
         ref(
           db,
@@ -176,7 +188,7 @@ export default function AddPlant({ navigation, route }) {
           idRaspberry +
           "/tabArduino/" + (value2 - 1).toString() +
           "/plants/" +
-          (index - 1).toString()
+          lengthTest + "/"
         ),
         {
           airHumidity: [valueInitial],
@@ -206,7 +218,6 @@ export default function AddPlant({ navigation, route }) {
       );
       navigation.goBack();
       console.log("added")
-      console.log(plants);
     } catch (e) {
       console.log(e);
     }
