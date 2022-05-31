@@ -73,12 +73,15 @@ export default function AddPlant({ navigation, route }) {
   const { index, idRaspberry } = route.params;
   const [dwnUrl, setDwnUrl] = useState("");
   const [nbArduino, setNbArduino] = useState(0);
+  const [lengthTest, SetLenghthTest] = useState(0);
   useEffect(() => {
     get(ref(db, "raspberries/" + idRaspberry + "/nbArduino")).then(
       (snapshot) => {
         setNbArduino(snapshot.val())
       }
     )
+
+
   }, [])
   const valueInitial = { T: "", V: "" };
   const tabNumberArduino = []
@@ -161,6 +164,11 @@ export default function AddPlant({ navigation, route }) {
       const result = await uploadBytes(fileRef, blob);
       blob.close();
       const dwnUrl = await getDownloadURL(fileRef)
+      get(ref(db, "raspberries/" + idRaspberry + "/tabArduino/" + (value2 - 1).toString() + "/plants/")).then(
+        (snapshot) => {
+          SetLenghthTest(snapshot.val().length());
+        }
+      )
       await set(
         ref(
           db,
@@ -476,7 +484,7 @@ export default function AddPlant({ navigation, route }) {
                 textDecorationLine: 'underline',
                 marginHorizontal: 30,
               }}
-            >
+              onPress={() => navigate.navigate('Help')}            >
               help?
             </Text>
           </TouchableOpacity>

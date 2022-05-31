@@ -417,6 +417,7 @@ export default function AddController({ navigation, route }) {
                 textDecorationLine: 'underline',
                 marginHorizontal: 30,
               }}
+              onPress={() => navigate.navigate('Help')}
             >
               help?
             </Text>

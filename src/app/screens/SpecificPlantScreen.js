@@ -83,7 +83,7 @@ export default function SpecificPlantSceen({ route }) {
         set(ref(db, 'raspberries/' + plant.idRaspberry + "/tabArduino/" + plant.idArduino + "/plants/" + plant.idPlant + "/commands/programm/" + (index - 1) + "/" + daysIndex + "/" + ((newData[daysIndex] === undefined) ? `0` : `${newData[daysIndex].length}`)), {
             trait: false,
             time: timevar1 + " : " + timevar2,
-            secondes: mintimevar * 60 + sectimevar,
+            secondes: parseInt(mintimevar * 60) + parseInt(sectimevar),
 
         });
         setModalVisible(false)
@@ -240,7 +240,7 @@ export default function SpecificPlantSceen({ route }) {
                                     keyExtractor={(_, index) => index}
                                     renderItem={({ item }) => <View>
                                         <Text style={{ fontSize: 14, fontWeight: '500', color: '#00000055', marginLeft: 7, marginTop: 4 }}>
-                                            {(item === undefined) ? "" : `${item.time} for ${item.minutes} min ${item.secondes} s`}
+                                            {(item === undefined) ? "" : `${item.time} for  ${item.secondes} s`}
                                         </Text>
                                     </View>} />
                                 <Text onPress={() => { setModalVisible(true); addTimeHandler(0) }} style={{ fontWeight: '700', fontSize: 12, color: '#07D779', marginLeft: 7, marginTop: 4, marginBottom: 10 }} >
